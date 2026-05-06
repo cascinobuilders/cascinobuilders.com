@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StairSmith — Stair Calculator for iOS</title>
+    <meta name="description" content="StairSmith is a one-time purchase iOS stair calculator with a live elevation diagram, building-code compliance, and a print-ready PDF cut sheet. No subscription, no ads, yours forever.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-canvas: #f5f2ec;
+            --bg-surface: #fbf9f5;
+            --line: #e4dccd;
+            --line-strong: #d6cdb9;
+            --ink: #1a1814;
+            --ink2: #4a463e;
+            --ink3: #877f6f;
+            --accent: #c4882b;
+            --accent-ink: #5a4428;
+            --accent-soft: #f2ebdc;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--ink);
+            background: var(--bg-canvas);
+            padding: 2rem 1.5rem;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        header { text-align: center; padding: 2.5rem 0 2rem; }
+        .brand-row { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .brand { font-size: 1.5rem; font-weight: 800; }
+        .accent-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+        h1 { font-size: 2.5rem; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .tagline { color: var(--ink2); font-size: 1.15rem; max-width: 480px; margin: 0 auto 2rem; line-height: 1.5; }
+        .cta { display: inline-block; padding: 0.95rem 2rem; background: var(--accent); color: var(--accent-ink); border-radius: 14px; font-weight: 600; font-size: 1rem; text-decoration: none; box-shadow: 0 6px 18px rgba(196, 136, 43, 0.25); }
+        .cta:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(196, 136, 43, 0.32); }
+        .price-line { margin-top: 1rem; font-size: 0.95rem; color: var(--ink2); }
+        .price-line strong { color: var(--ink); }
+        section { background: var(--bg-surface); border: 1px solid var(--line); border-radius: 18px; padding: 1.75rem 1.75rem 1.5rem; margin-top: 1.5rem; box-shadow: 0 2px 10px rgba(38, 30, 14, 0.04); }
+        h2 { font-size: 1.25rem; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+        h2 .label { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: var(--ink3); margin-right: 0.5rem; vertical-align: 1px; }
+        ul.feature-list { list-style: none; padding: 0; }
+        ul.feature-list li { padding: 0.7rem 0; border-top: 1px solid var(--line); display: flex; gap: 0.85rem; align-items: flex-start; color: var(--ink2); }
+        ul.feature-list li:first-child { border-top: none; }
+        ul.feature-list li::before { content: "→"; color: var(--accent); font-weight: 700; font-family: "SF Mono", monospace; }
+        .footer-links { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; color: var(--ink3); font-size: 0.9rem; }
+        .footer-links a { color: var(--accent-ink); text-decoration: none; margin: 0 0.6rem; font-weight: 600; }
+        .footer-links a:hover { text-decoration: underline; }
+        .meta { margin-top: 0.75rem; font-size: 0.8rem; color: var(--ink3); font-family: "SF Mono", monospace; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand-row">
+            <span class="accent-dot"></span>
+            <span class="brand">StairSmith</span>
+        </div>
+        <h1>Stair calculator for builders, DIYers, and dads with a saw.</h1>
+        <p class="tagline">Live diagram. Code compliance. Print-ready cut sheet. No subscription, no ads, yours forever.</p>
+        <a class="cta" href="#" id="appstore-link">Get StairSmith on the App Store</a>
+        <p class="price-line"><strong>$9.99</strong> &nbsp;·&nbsp; one-time purchase &nbsp;·&nbsp; iPhone &amp; iPad</p>
+    </header>
+
+    <section>
+        <h2><span class="label">WHY</span>The fastest stair calculator that respects you.</h2>
+        <ul class="feature-list">
+            <li>Type your total rise. StairSmith equalizes the risers, draws the diagram live, and tells you what to cut — instantly.</li>
+            <li>Building-code compliance built in for IRC, IBC, NBC, Part K, and NCC. No code book required.</li>
+            <li>Print-ready PDF cut sheet with elevation diagram, framing-square layout, and lumber list. AirDrop, email, or print.</li>
+            <li>Works offline. No account, no cloud, no analytics, no ads. Your projects stay on your device.</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2><span class="label">WHAT YOU GET</span>Everything you need to build a flight of stairs, right.</h2>
+        <ul class="feature-list">
+            <li><strong>Live elevation diagram</strong> — pinch, pan, tap any dimension to learn what it means.</li>
+            <li><strong>Cut Sheet hero</strong> — riser height, code going, riser count, stringer length. Take it to the saw.</li>
+            <li><strong>Lumber cheat sheet</strong> — number of stringers, treads, and risers, with stringer length rounded to the next standard 2×12.</li>
+            <li><strong>Framing-square layout</strong> — "set tongue at 7&quot;, blade at 10&quot;" with a beautiful, printable diagram.</li>
+            <li><strong>Code compliance</strong> — pass/fail on riser, going, 2R+T, headroom; handrail and guard reminders for free.</li>
+        </ul>
+    </section>
+
+    <div class="footer-links">
+        <a href="/stairsmith/support/">Support</a>
+        ·
+        <a href="/stairsmith/privacy/">Privacy</a>
+        ·
+        <a href="/">Cascino Builders</a>
+        <p class="meta">Made with sawdust in Orinda, CA.</p>
+    </div>
+</body>
+</html>

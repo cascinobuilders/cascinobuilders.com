@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StairSmith — Support</title>
+    <meta name="description" content="Support for StairSmith — the iOS stair calculator with live diagram, code compliance, and PDF export.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-canvas: #f5f2ec;
+            --bg-surface: #fbf9f5;
+            --line: #e4dccd;
+            --line-strong: #d6cdb9;
+            --ink: #1a1814;
+            --ink2: #4a463e;
+            --ink3: #877f6f;
+            --accent: #c4882b;
+            --accent-ink: #5a4428;
+            --accent-soft: #f2ebdc;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", Helvetica, Arial, sans-serif;
+            line-height: 1.65;
+            color: var(--ink);
+            background: var(--bg-canvas);
+            padding: 2rem 1.5rem;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        .crumb { color: var(--ink3); font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .crumb a { color: var(--accent-ink); text-decoration: none; font-weight: 600; }
+        .crumb a:hover { text-decoration: underline; }
+        h1 { font-size: 2.25rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .subtitle { color: var(--ink2); margin-bottom: 1.5rem; font-size: 1rem; }
+        h2 { font-size: 1.2rem; margin-top: 2rem; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+        h3 { font-size: 1rem; margin-top: 1.25rem; margin-bottom: 0.5rem; }
+        p { margin-bottom: 1rem; color: var(--ink2); }
+        ul { margin-bottom: 1rem; padding-left: 1.25rem; color: var(--ink2); }
+        li { margin-bottom: 0.4rem; }
+        a { color: var(--accent-ink); text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+        section.card { background: var(--bg-surface); border: 1px solid var(--line); border-radius: 18px; padding: 1.5rem 1.75rem; margin-top: 1rem; box-shadow: 0 2px 10px rgba(38, 30, 14, 0.04); }
+        .contact-btn { display: inline-block; margin-top: 0.5rem; padding: 0.85rem 1.6rem; background: var(--accent); color: var(--accent-ink); border-radius: 12px; font-weight: 600; font-size: 1rem; text-decoration: none; box-shadow: 0 4px 14px rgba(196, 136, 43, 0.22); }
+        .contact-btn:hover { transform: translateY(-1px); }
+        .footer { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--ink3); font-size: 0.85rem; text-align: center; }
+        code { font-family: "SF Mono", monospace; background: var(--accent-soft); padding: 1px 6px; border-radius: 4px; color: var(--ink); font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="crumb"><a href="/stairsmith/">StairSmith</a> &nbsp;·&nbsp; Support</div>
+
+    <h1>Support</h1>
+    <p class="subtitle">StairSmith for iOS &amp; iPad — got a question? You're in the right place.</p>
+
+    <section class="card">
+        <h2>Contact</h2>
+        <p>The fastest way to get help is to email me directly. I read every message.</p>
+        <a class="contact-btn" href="mailto:support@cascinobuilders.com?subject=StairSmith Support">support@cascinobuilders.com</a>
+    </section>
+
+    <h2>Frequently Asked</h2>
+
+    <h3>How do I measure Total Rise?</h3>
+    <p>Measure from the <strong>finished</strong> upper floor down to the <strong>finished</strong> lower floor (or grade, for deck stairs). If decking isn't down yet, add the deck-board thickness. Measure in two or three spots and use the largest — stairs are cut to a single number, so the tallest measurement controls.</p>
+
+    <h3>Why are my risers a different height than I asked for?</h3>
+    <p>StairSmith equalizes the risers so every step is identical. It divides your Total Rise by your Target Riser to pick a whole number of risers, then makes each riser exactly <code>totalRise / riserCount</code>. Your actual riser height will be very close to your target, but rounded to make all steps equal.</p>
+
+    <h3>What's the difference between Tread Depth and Code Going?</h3>
+    <p>Tread Depth is the physical board dimension you'll buy. Code Going is what building codes measure: the horizontal distance from one nosing to the next (board depth minus the nosing overhang). StairSmith does the conversion automatically and validates the code-compliant value.</p>
+
+    <h3>Do I really need the framing-square layout?</h3>
+    <p>If you're cutting stringers yourself, yes. The framing-square diagram on the second page of the PDF tells you exactly where to set the square (tongue at the riser height, blade at the code going) so each step lays out identically. Slide the square down the board, mark, repeat.</p>
+
+    <h3>The PDF prints on two pages — is that on purpose?</h3>
+    <p>Yes. Page 1 is the cut sheet (numbers, diagram, code compliance). Page 2 is the take-to-the-saw companion (lumber list, framing-square layout). Print page 2 only if you're heading to the workbench.</p>
+
+    <h3>Can I switch between imperial and metric?</h3>
+    <p>Yes. Tap the <code>in</code> / <code>mm</code> toggle in the Measurements card. Or change your default in Settings — the default applies to new projects only; existing projects keep their own setting.</p>
+
+    <h3>Does StairSmith handle multi-flight stairs, winders, or curved stairs?</h3>
+    <p>Not in v1.0. StairSmith currently supports straight single-flight stairs only. Multi-flight and landings are on the roadmap.</p>
+
+    <h3>Where are my projects stored?</h3>
+    <p>On your device, in the app's local SwiftData store. There is no cloud sync, no account, and no analytics. If you delete the app, your projects are deleted with it.</p>
+
+    <h3>The code compliance says my design fails — what now?</h3>
+    <p>The compliance card tells you which dimension is out of bounds and by how much. Try lowering your Target Riser (which usually fixes "riser too tall") or increasing your Tread Depth (which fixes "tread too shallow"). The diagram updates live, so iterate quickly.</p>
+
+    <h3>Can I trust StairSmith for permitted construction?</h3>
+    <p>StairSmith is a calculation aid. Always verify dimensions on-site, consult your local building authority for code amendments, and confirm structural adequacy with a qualified professional. See the in-app Disclaimer for full details.</p>
+
+    <div class="footer">
+        <a href="/stairsmith/">← Back to StairSmith</a>
+        &nbsp;·&nbsp;
+        <a href="/stairsmith/privacy/">Privacy</a>
+    </div>
+</body>
+</html>
