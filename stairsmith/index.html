@@ -34,10 +34,13 @@
         .accent-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
         h1 { font-size: 2.5rem; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em; }
         .tagline { color: var(--ink2); font-size: 1.15rem; max-width: 480px; margin: 0 auto 2rem; line-height: 1.5; }
-        .cta { display: inline-block; padding: 0.95rem 2rem; background: var(--accent); color: var(--accent-ink); border-radius: 14px; font-weight: 600; font-size: 1rem; text-decoration: none; box-shadow: 0 6px 18px rgba(196, 136, 43, 0.25); }
+        .cta { display: inline-block; padding: 0.95rem 2rem; background: var(--accent); color: var(--accent-ink); border-radius: 14px; font-weight: 600; font-size: 1rem; text-decoration: none; box-shadow: 0 6px 18px rgba(196, 136, 43, 0.25); transition: transform 150ms ease, box-shadow 150ms ease; }
         .cta:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(196, 136, 43, 0.32); }
-        .price-line { margin-top: 1rem; font-size: 0.95rem; color: var(--ink2); }
-        .price-line strong { color: var(--ink); }
+        .sale-tag { display: inline-block; margin-top: 1.25rem; padding: 0.35rem 0.7rem; background: var(--accent-soft); color: var(--accent-ink); border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(196, 136, 43, 0.25); }
+        .price-line { margin-top: 0.75rem; font-size: 1rem; color: var(--ink2); }
+        .price-line .price-now { color: var(--ink); font-weight: 700; font-size: 1.15rem; }
+        .price-line .price-was { color: var(--ink3); text-decoration: line-through; text-decoration-thickness: 1.5px; margin-left: 0.4rem; font-weight: 500; }
+        .price-line .price-meta { display: block; margin-top: 0.35rem; font-size: 0.85rem; color: var(--ink3); }
         section { background: var(--bg-surface); border: 1px solid var(--line); border-radius: 18px; padding: 1.75rem 1.75rem 1.5rem; margin-top: 1.5rem; box-shadow: 0 2px 10px rgba(38, 30, 14, 0.04); }
         h2 { font-size: 1.25rem; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
         h2 .label { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: var(--ink3); margin-right: 0.5rem; vertical-align: 1px; }
@@ -50,25 +53,32 @@
         .footer-links a:hover { text-decoration: underline; }
         .meta { margin-top: 0.75rem; font-size: 0.8rem; color: var(--ink3); font-family: "SF Mono", monospace; }
 
-        /* Preview rail */
-        .preview { padding: 0.5rem 0 0.5rem; }
+        /* Preview rail — breaks out of the 760px body container so phones
+           never get clipped by the page-level padding. Uses 100vw with a
+           negative margin trick to span the full viewport on every screen. */
+        .preview {
+            position: relative;
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            padding: 0.5rem 0 0.75rem;
+        }
         .preview-eyebrow { text-align: center; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; color: var(--ink3); text-transform: uppercase; margin-bottom: 0.5rem; }
-        .preview h2.preview-title { text-align: center; font-size: 1.6rem; letter-spacing: -0.01em; margin-bottom: 1.5rem; }
+        .preview h2.preview-title { text-align: center; font-size: 1.6rem; letter-spacing: -0.01em; margin: 0 1.5rem 1.5rem; }
         .preview-rail-wrap { position: relative; }
         .preview-rail {
             display: flex;
-            gap: 1rem;
+            gap: clamp(0.75rem, 1.4vw, 1.25rem);
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            padding: 0.5rem 1.5rem 1.5rem;
-            margin: 0 -1.5rem;
+            padding: 1rem clamp(1rem, 4vw, 3rem) 1.75rem;
             scrollbar-width: none;
+            justify-content: flex-start;
         }
         .preview-rail::-webkit-scrollbar { display: none; }
         .preview-card {
             flex: 0 0 auto;
-            width: 248px;
+            width: clamp(220px, 22vw, 280px);
             scroll-snap-align: center;
             position: relative;
         }
@@ -77,7 +87,7 @@
             width: 100%;
             aspect-ratio: 1206 / 2422;
             background: #000;
-            border-radius: 32px;
+            border-radius: clamp(28px, 2.5vw, 36px);
             overflow: hidden;
             box-shadow:
                 0 1px 0 rgba(255,255,255,0.6) inset,
@@ -117,12 +127,12 @@
             letter-spacing: 0.04em;
             margin-top: -0.25rem;
         }
-        @media (min-width: 720px) {
-            .preview-rail { padding-left: 0.5rem; padding-right: 0.5rem; margin: 0; justify-content: center; }
-            .preview-card { width: 232px; }
+        /* Wide screens: center the cards if they all fit on one row */
+        @media (min-width: 1500px) {
+            .preview-rail { justify-content: center; }
         }
         @media (max-width: 480px) {
-            .preview-card { width: 220px; }
+            .preview h2.preview-title { font-size: 1.4rem; }
         }
         @media (prefers-reduced-motion: reduce) {
             .preview-card .phone { transition: none; }
@@ -137,8 +147,12 @@
         </div>
         <h1>Stair calculator for builders, DIYers, and dads with a saw.</h1>
         <p class="tagline">Live diagram. Code compliance. Print-ready cut sheet. No subscription, no ads, yours forever.</p>
-        <a class="cta" href="#" id="appstore-link">Get StairSmith on the App Store</a>
-        <p class="price-line"><strong>$9.99</strong> &nbsp;·&nbsp; one-time purchase &nbsp;·&nbsp; iPhone &amp; iPad</p>
+        <a class="cta" href="https://apps.apple.com/us/app/stairsmith/id6767048001" id="appstore-link">Get StairSmith on the App Store</a>
+        <span class="sale-tag">Launch sale</span>
+        <p class="price-line">
+            <span class="price-now">$6.99</span><span class="price-was">$9.99</span>
+            <span class="price-meta">One-time purchase &nbsp;·&nbsp; iPhone &amp; iPad &nbsp;·&nbsp; no subscription</span>
+        </p>
     </header>
 
     <div class="preview" aria-label="StairSmith app preview">
