@@ -49,6 +49,84 @@
         .footer-links a { color: var(--accent-ink); text-decoration: none; margin: 0 0.6rem; font-weight: 600; }
         .footer-links a:hover { text-decoration: underline; }
         .meta { margin-top: 0.75rem; font-size: 0.8rem; color: var(--ink3); font-family: "SF Mono", monospace; }
+
+        /* Preview rail */
+        .preview { padding: 0.5rem 0 0.5rem; }
+        .preview-eyebrow { text-align: center; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; color: var(--ink3); text-transform: uppercase; margin-bottom: 0.5rem; }
+        .preview h2.preview-title { text-align: center; font-size: 1.6rem; letter-spacing: -0.01em; margin-bottom: 1.5rem; }
+        .preview-rail-wrap { position: relative; }
+        .preview-rail {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 0.5rem 1.5rem 1.5rem;
+            margin: 0 -1.5rem;
+            scrollbar-width: none;
+        }
+        .preview-rail::-webkit-scrollbar { display: none; }
+        .preview-card {
+            flex: 0 0 auto;
+            width: 248px;
+            scroll-snap-align: center;
+            position: relative;
+        }
+        .preview-card .phone {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1206 / 2422;
+            background: #000;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow:
+                0 1px 0 rgba(255,255,255,0.6) inset,
+                0 0 0 1.5px #1a1814,
+                0 18px 32px -12px rgba(38, 30, 14, 0.35),
+                0 4px 10px rgba(38, 30, 14, 0.12);
+            transition: transform 200ms ease, box-shadow 200ms ease;
+        }
+        .preview-card:hover .phone {
+            transform: translateY(-3px);
+            box-shadow:
+                0 1px 0 rgba(255,255,255,0.6) inset,
+                0 0 0 1.5px #1a1814,
+                0 22px 38px -12px rgba(38, 30, 14, 0.42),
+                0 6px 14px rgba(38, 30, 14, 0.15);
+        }
+        .preview-card video,
+        .preview-card .poster {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .preview-card .poster {
+            transition: opacity 250ms ease;
+            z-index: 1;
+        }
+        .preview-card.is-playing .poster { opacity: 0; pointer-events: none; }
+        .preview-card video { z-index: 0; }
+        .preview-rail-hint {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--ink3);
+            font-family: "SF Mono", monospace;
+            letter-spacing: 0.04em;
+            margin-top: -0.25rem;
+        }
+        @media (min-width: 720px) {
+            .preview-rail { padding-left: 0.5rem; padding-right: 0.5rem; margin: 0; justify-content: center; }
+            .preview-card { width: 232px; }
+        }
+        @media (max-width: 480px) {
+            .preview-card { width: 220px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .preview-card .phone { transition: none; }
+        }
     </style>
 </head>
 <body>
@@ -62,6 +140,36 @@
         <a class="cta" href="#" id="appstore-link">Get StairSmith on the App Store</a>
         <p class="price-line"><strong>$9.99</strong> &nbsp;·&nbsp; one-time purchase &nbsp;·&nbsp; iPhone &amp; iPad</p>
     </header>
+
+    <div class="preview" aria-label="StairSmith app preview">
+        <p class="preview-eyebrow">See it work</p>
+        <h2 class="preview-title">From total rise to ready-to-cut.</h2>
+        <div class="preview-rail-wrap">
+            <div class="preview-rail" id="preview-rail">
+                <div class="preview-card"><div class="phone">
+                    <img class="poster" src="/stairsmith/preview/clip-1-typing.jpg" alt="Type the rise. Get every cut.">
+                    <video muted loop playsinline preload="metadata" poster="/stairsmith/preview/clip-1-typing.jpg" data-src="/stairsmith/preview/clip-1-typing.mp4"></video>
+                </div></div>
+                <div class="preview-card"><div class="phone">
+                    <img class="poster" src="/stairsmith/preview/clip-2-tap-learn.jpg" alt="Every number, explained.">
+                    <video muted loop playsinline preload="metadata" poster="/stairsmith/preview/clip-2-tap-learn.jpg" data-src="/stairsmith/preview/clip-2-tap-learn.mp4"></video>
+                </div></div>
+                <div class="preview-card"><div class="phone">
+                    <img class="poster" src="/stairsmith/preview/clip-3-show-at-saw.jpg" alt="Take the numbers to the saw.">
+                    <video muted loop playsinline preload="metadata" poster="/stairsmith/preview/clip-3-show-at-saw.jpg" data-src="/stairsmith/preview/clip-3-show-at-saw.mp4"></video>
+                </div></div>
+                <div class="preview-card"><div class="phone">
+                    <img class="poster" src="/stairsmith/preview/clip-4-pdf-framing-square.jpg" alt="Print it. Mark it. Cut it.">
+                    <video muted loop playsinline preload="metadata" poster="/stairsmith/preview/clip-4-pdf-framing-square.jpg" data-src="/stairsmith/preview/clip-4-pdf-framing-square.mp4"></video>
+                </div></div>
+                <div class="preview-card"><div class="phone">
+                    <img class="poster" src="/stairsmith/preview/clip-5-code-switcher.jpg" alt="IRC, IBC, NBC — checked live.">
+                    <video muted loop playsinline preload="metadata" poster="/stairsmith/preview/clip-5-code-switcher.jpg" data-src="/stairsmith/preview/clip-5-code-switcher.mp4"></video>
+                </div></div>
+            </div>
+            <p class="preview-rail-hint">↔ swipe to see all five</p>
+        </div>
+    </div>
 
     <section>
         <h2><span class="label">WHY</span>The fastest stair calculator that respects you.</h2>
@@ -92,5 +200,39 @@
         <a href="/">Cascino Builders</a>
         <p class="meta">Made with sawdust in Orinda, CA.</p>
     </div>
+
+    <script>
+        // Autoplay each preview clip only when it scrolls into view; pause and
+        // unload data-src when it leaves. Keeps the page light on bandwidth.
+        (function () {
+            var cards = document.querySelectorAll('.preview-card');
+            if (!('IntersectionObserver' in window)) {
+                cards.forEach(function (card) {
+                    var v = card.querySelector('video');
+                    if (v && v.dataset.src) { v.src = v.dataset.src; v.play().catch(function(){}); card.classList.add('is-playing'); }
+                });
+                return;
+            }
+            var io = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    var card = entry.target;
+                    var video = card.querySelector('video');
+                    if (!video) return;
+                    if (entry.isIntersecting) {
+                        if (!video.src && video.dataset.src) { video.src = video.dataset.src; }
+                        var p = video.play();
+                        if (p && typeof p.then === 'function') {
+                            p.then(function () { card.classList.add('is-playing'); }).catch(function () {});
+                        } else {
+                            card.classList.add('is-playing');
+                        }
+                    } else {
+                        video.pause();
+                    }
+                });
+            }, { threshold: 0.55 });
+            cards.forEach(function (card) { io.observe(card); });
+        })();
+    </script>
 </body>
 </html>
