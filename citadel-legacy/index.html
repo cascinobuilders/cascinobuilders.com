@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legacy Mode: Between Threats — The 7th Citadel</title>
+<style>
+  :root {
+    --black: #111;
+    --white: #fafafa;
+    --grey-100: #f0f0f0;
+    --grey-200: #e0e0e0;
+    --grey-400: #999;
+    --grey-600: #666;
+    --accent: #1a6b6b;
+    --accent-light: #e6f2f2;
+    --accent-dark: #124e4e;
+    --rule: #ccc;
+    --red: #b33;
+    --red-light: #fef0f0;
+    --gold: #886800;
+    --mono: 'SF Mono', 'Fira Code', 'IBM Plex Mono', 'Menlo', monospace;
+    --sans: 'Helvetica Neue', 'Arial', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 15px; }
+
+  body {
+    font-family: var(--sans);
+    color: var(--black);
+    background: var(--white);
+    line-height: 1.6;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  /* — Typography — */
+  h1, h2, h3, h4 { font-family: var(--mono); font-weight: 600; letter-spacing: -0.02em; }
+  h1 { font-size: 1.8rem; margin-bottom: 0.25rem; }
+  h2 { font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3.5rem; margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--black); }
+  h3 { font-size: 1rem; margin-top: 2rem; margin-bottom: 0.6rem; color: var(--accent); }
+  h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 1.5rem; margin-bottom: 0.4rem; color: var(--grey-600); }
+
+  p { margin-bottom: 0.8rem; }
+  p + p { margin-top: 0; }
+
+  .subtitle { font-family: var(--mono); font-size: 0.85rem; color: var(--grey-600); margin-bottom: 1.5rem; letter-spacing: 0.04em; }
+  .section-label { font-family: var(--mono); font-size: 0.75rem; color: var(--grey-400); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.25rem; display: block; }
+
+  strong { font-weight: 700; }
+  em { font-style: italic; color: var(--grey-600); }
+
+  ul, ol { margin-bottom: 0.8rem; padding-left: 1.5rem; }
+  li { margin-bottom: 0.3rem; }
+  li::marker { color: var(--accent); }
+
+  /* — Tables — */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.9rem; }
+  th { font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; text-align: left; padding: 0.5rem 0.75rem; border-bottom: 2px solid var(--black); color: var(--grey-600); }
+  td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  tr:last-child td { border-bottom: 2px solid var(--black); }
+  td:first-child { font-weight: 600; white-space: nowrap; }
+
+  .cost-cell { font-family: var(--mono); text-align: center; color: var(--accent); font-weight: 700; }
+
+  /* — Collapsible — */
+  details { margin: 0.5rem 0 1rem; }
+  summary {
+    font-family: var(--mono); font-size: 0.8rem; color: var(--accent);
+    cursor: pointer; letter-spacing: 0.04em; padding: 0.3rem 0; user-select: none;
+  }
+  summary:hover { text-decoration: underline; }
+  details[open] summary { margin-bottom: 0.4rem; }
+  .rationale {
+    font-size: 0.85rem; color: var(--grey-600); padding: 0.75rem 1rem;
+    border-left: 3px solid var(--accent); background: var(--accent-light); line-height: 1.5;
+  }
+  .rationale p { margin-bottom: 0.4rem; }
+  .rationale p:last-child { margin-bottom: 0; }
+
+  /* — Callout — */
+  .callout {
+    padding: 1rem 1.25rem; margin: 1rem 0 1.5rem;
+    border-left: 4px solid var(--accent); background: var(--grey-100); font-size: 0.9rem;
+  }
+  .callout strong { display: block; margin-bottom: 0.2rem; }
+
+  /* — Tags — */
+  .tag {
+    display: inline-block; font-family: var(--mono); font-size: 0.65rem;
+    text-transform: uppercase; letter-spacing: 0.08em; padding: 0.15rem 0.5rem;
+    margin-right: 0.3rem; border: 1px solid;
+  }
+  .tag-reset { color: var(--red); border-color: var(--red); }
+  .tag-keep { color: var(--accent); border-color: var(--accent); }
+  .tag-convert { color: var(--gold); border-color: var(--gold); }
+  .tag-record { color: var(--grey-600); border-color: var(--grey-400); }
+
+  /* — TOC — */
+  .toc { margin: 1.5rem 0 2rem; padding: 0; }
+  .toc li { list-style: none; font-family: var(--mono); font-size: 0.85rem; padding: 0.3rem 0; border-bottom: 1px dotted var(--rule); }
+  .toc li:last-child { border-bottom: none; }
+  .toc a { color: var(--black); text-decoration: none; }
+  .toc a:hover { color: var(--accent); }
+  .toc .toc-label { color: var(--grey-400); margin-right: 0.5rem; }
+
+  /* — Variant cards — */
+  .variant-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1rem 0 1.5rem; }
+  .variant-card { border: 2px solid var(--rule); padding: 1rem; font-size: 0.85rem; }
+  .variant-card.recommended { border-color: var(--accent); }
+  .variant-card h4 { margin-top: 0; color: var(--black); }
+  .variant-card ul { padding-left: 1rem; margin-bottom: 0; }
+  .variant-card li { font-size: 0.8rem; margin-bottom: 0.2rem; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 3rem 0; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .back-to-top {
+    display: block; font-family: var(--mono); font-size: 0.75rem; color: var(--grey-400);
+    text-align: right; margin-top: 1.5rem; text-decoration: none;
+  }
+  .back-to-top:hover { color: var(--accent); }
+
+  /* ============================================ */
+  /* VARIANT SWITCHER                             */
+  /* ============================================ */
+  .variant-switcher {
+    display: flex; gap: 0; margin: 0 0 2.5rem;
+    border: 2px solid var(--black); width: fit-content;
+  }
+  .variant-switcher button {
+    font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 0.5rem 1.2rem; border: none;
+    background: var(--white); color: var(--grey-600); cursor: pointer;
+    border-right: 1px solid var(--rule); transition: all 0.15s;
+  }
+  .variant-switcher button:last-child { border-right: none; }
+  .variant-switcher button:hover { background: var(--grey-100); }
+  .variant-switcher button.active {
+    background: var(--black); color: var(--white);
+  }
+
+  /* ============================================ */
+  /* CALCULATOR PANELS                            */
+  /* ============================================ */
+  .calc-panel {
+    border: 2px solid var(--black); padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0; background: var(--white);
+  }
+  .calc-panel h4 { margin-top: 0; }
+
+  .calc-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.5rem 0; border-bottom: 1px solid var(--grey-200); font-size: 0.9rem;
+  }
+  .calc-row:last-child { border-bottom: none; }
+  .calc-row label { flex: 1; cursor: pointer; }
+  .calc-row .calc-control { flex-shrink: 0; margin-left: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .calc-row .calc-marks {
+    font-family: var(--mono); font-weight: 700; color: var(--accent);
+    min-width: 2rem; text-align: right;
+  }
+
+  .calc-row input[type="checkbox"] {
+    width: 16px; height: 16px; accent-color: var(--accent);
+    cursor: pointer; flex-shrink: 0; margin-right: 0.75rem;
+  }
+
+  /* Stepper */
+  .stepper { display: flex; align-items: center; gap: 0; }
+  .stepper button {
+    font-family: var(--mono); font-size: 0.85rem; width: 28px; height: 28px;
+    border: 1px solid var(--rule); background: var(--white); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; color: var(--black);
+  }
+  .stepper button:hover { background: var(--grey-100); }
+  .stepper button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .stepper .stepper-val {
+    font-family: var(--mono); font-size: 0.85rem; font-weight: 700;
+    width: 28px; text-align: center; border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule); height: 28px; line-height: 28px;
+  }
+
+  /* Select */
+  .calc-select {
+    font-family: var(--mono); font-size: 0.8rem; padding: 0.3rem 0.5rem;
+    border: 1px solid var(--rule); background: var(--white); color: var(--black);
+  }
+
+  /* ============================================ */
+  /* BUDGET BAR                                   */
+  /* ============================================ */
+  .budget-bar {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    border: 2px solid var(--black); margin: 1.5rem 0; text-align: center;
+    font-family: var(--mono);
+  }
+  .budget-cell {
+    padding: 0.6rem 0.4rem; border-right: 1px solid var(--rule);
+  }
+  .budget-cell:last-child { border-right: none; }
+  .budget-cell .budget-label {
+    font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--grey-400); display: block;
+  }
+  .budget-cell .budget-num {
+    font-size: 1.4rem; font-weight: 700; color: var(--black); display: block;
+    line-height: 1.2;
+  }
+  .budget-cell .budget-num.accent { color: var(--accent); }
+  .budget-cell .budget-num.warn { color: var(--red); }
+
+  /* ============================================ */
+  /* SPEND TRACKER                                */
+  /* ============================================ */
+  .spend-row {
+    display: flex; align-items: flex-start; padding: 0.75rem 0;
+    border-bottom: 1px solid var(--grey-200); gap: 0.75rem;
+  }
+  .spend-row:last-child { border-bottom: 2px solid var(--black); }
+  .spend-row.disabled { opacity: 0.35; pointer-events: none; }
+
+  .spend-info { flex: 1; min-width: 0; }
+  .spend-name { font-weight: 700; font-size: 0.9rem; }
+  .spend-name .tag { vertical-align: middle; }
+  .spend-detail { font-size: 0.8rem; color: var(--grey-600); margin-top: 0.15rem; }
+  .spend-cost {
+    font-family: var(--mono); font-weight: 700; color: var(--accent);
+    font-size: 0.9rem; flex-shrink: 0; min-width: 4rem; text-align: center;
+    padding-top: 0.1rem;
+  }
+  .spend-control { flex-shrink: 0; }
+
+  .spend-header {
+    display: flex; justify-content: space-between; padding: 0.4rem 0;
+    border-bottom: 2px solid var(--black); margin-bottom: 0;
+    font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--grey-400);
+  }
+
+  .spend-warning {
+    font-family: var(--mono); font-size: 0.75rem; color: var(--red);
+    padding: 0.5rem 0; display: none;
+  }
+  .spend-warning.visible { display: block; }
+
+  .categories-meter {
+    font-family: var(--mono); font-size: 0.8rem; color: var(--grey-600);
+    margin: 0.75rem 0 0; padding: 0.5rem 0.75rem; background: var(--grey-100);
+  }
+  .categories-meter strong { color: var(--black); }
+  .categories-meter.at-limit strong { color: var(--red); }
+
+  /* ============================================ */
+  /* INTERACTIVE CHECKLIST                        */
+  /* ============================================ */
+  .i-checklist { list-style: none; padding-left: 0; margin-bottom: 1rem; }
+  .i-checklist li {
+    padding: 0.5rem 0 0.5rem 0; position: relative;
+    border-bottom: 1px solid var(--grey-200); display: flex; align-items: flex-start; gap: 0.75rem;
+  }
+  .i-checklist li:last-child { border-bottom: none; }
+  .i-checklist li input[type="checkbox"] {
+    width: 16px; height: 16px; accent-color: var(--accent);
+    cursor: pointer; flex-shrink: 0; margin-top: 0.2rem;
+  }
+  .i-checklist li.checked .check-text { text-decoration: line-through; opacity: 0.45; }
+  .i-checklist .step-num { font-family: var(--mono); font-size: 0.75rem; color: var(--grey-400); margin-right: 0.25rem; }
+  .i-checklist .check-text { flex: 1; }
+
+  .checklist-controls {
+    display: flex; gap: 0.75rem; align-items: center;
+    margin-bottom: 0.5rem; font-family: var(--mono); font-size: 0.75rem;
+  }
+  .checklist-controls button {
+    font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 0.3rem 0.7rem;
+    border: 1px solid var(--rule); background: var(--white); color: var(--grey-600);
+    cursor: pointer;
+  }
+  .checklist-controls button:hover { background: var(--grey-100); color: var(--black); }
+  .checklist-progress { color: var(--grey-400); }
+
+  /* ============================================ */
+  /* TOOLBAR                                      */
+  /* ============================================ */
+  .toolbar {
+    display: flex; gap: 0.75rem; align-items: center; margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .toolbar button {
+    font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.06em; padding: 0.4rem 0.8rem;
+    border: 1px solid var(--rule); background: var(--white); color: var(--grey-600);
+    cursor: pointer;
+  }
+  .toolbar button:hover { background: var(--grey-100); color: var(--black); }
+
+  /* ============================================ */
+  /* STATIC CHECKLIST (for quick-ref print)       */
+  /* ============================================ */
+  .checklist { list-style: none; padding-left: 0; }
+  .checklist li { padding: 0.4rem 0 0.4rem 2rem; position: relative; border-bottom: 1px solid var(--grey-200); }
+  .checklist li::before {
+    content: ''; position: absolute; left: 0; top: 0.55rem;
+    width: 14px; height: 14px; border: 2px solid var(--accent);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist .step-num { font-family: var(--mono); font-size: 0.75rem; color: var(--grey-400); margin-right: 0.5rem; }
+
+  /* ============================================ */
+  /* CHRONICLE BUILDER                            */
+  /* ============================================ */
+  .chronicle-builder {
+    border: 2px solid var(--black); padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0; background: var(--white);
+  }
+  .chronicle-builder h4 { margin-top: 0; }
+  .chronicle-field { margin-bottom: 0.75rem; }
+  .chronicle-field label {
+    display: block; font-family: var(--mono); font-size: 0.75rem;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--grey-600);
+    margin-bottom: 0.25rem;
+  }
+  .chronicle-field input,
+  .chronicle-field textarea,
+  .chronicle-field select {
+    width: 100%; font-family: var(--sans); font-size: 0.9rem;
+    padding: 0.4rem 0.6rem; border: 1px solid var(--rule);
+    background: var(--white); color: var(--black);
+  }
+  .chronicle-field textarea { resize: vertical; min-height: 2.5rem; }
+  .chronicle-field-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+  }
+  .chronicle-scores {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem;
+  }
+  .chronicle-scores input { text-align: center; }
+
+  /* ============================================ */
+  /* CHRONICLE PRINT                              */
+  /* ============================================ */
+  .chronicle-print-container { display: none; }
+
+  body.print-chronicle-only > *:not(.chronicle-print-container) { display: none !important; }
+  body.print-chronicle-only .chronicle-print-container { display: block !important; }
+
+  .chronicle-print {
+    font-family: var(--sans);
+    color: #000;
+    max-width: 100%;
+  }
+  .chronicle-print h1 {
+    font-family: var(--mono);
+    font-size: 16pt;
+    text-align: center;
+    margin: 0 0 2pt;
+    letter-spacing: -0.02em;
+  }
+  .chronicle-print .chron-subtitle {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 8pt;
+    color: #666;
+    margin-bottom: 10pt;
+    padding-bottom: 6pt;
+    border-bottom: 2pt solid #000;
+  }
+  .chronicle-print .chron-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8pt 14pt;
+  }
+  .chronicle-print .chron-full { grid-column: 1 / -1; }
+  .chronicle-print .chron-section h3 {
+    font-family: var(--mono);
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #666;
+    margin: 0 0 2pt;
+    padding: 0;
+  }
+  .chronicle-print .chron-section p,
+  .chronicle-print .chron-section .chron-val {
+    font-size: 10pt;
+    line-height: 1.4;
+    margin: 0 0 4pt;
+    min-height: 12pt;
+  }
+  .chronicle-print .chron-scores-row {
+    display: flex;
+    gap: 12pt;
+    font-size: 10pt;
+  }
+  .chronicle-print .chron-scores-row span {
+    font-family: var(--mono);
+  }
+  .chronicle-print .chron-divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 6pt 0;
+    grid-column: 1 / -1;
+  }
+  .chronicle-print .chron-marks {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 12pt;
+    font-weight: 700;
+    padding: 6pt 0;
+    border: 2px solid #000;
+    margin-top: 4pt;
+  }
+  .chronicle-print .chron-footer {
+    text-align: center;
+    font-size: 7pt;
+    color: #999;
+    margin-top: 10pt;
+    padding-top: 6pt;
+    border-top: 1px solid #ccc;
+  }
+
+  /* ============================================ */
+  /* PRINT — QUICK REFERENCE (8.5x11)            */
+  /* ============================================ */
+  @media print {
+    body { max-width: 100%; padding: 0.5cm; font-size: 9pt; line-height: 1.3; }
+    .no-print, .toolbar, .variant-switcher, .calc-panel, .budget-bar,
+    .spend-header, .spend-row, .spend-warning, .categories-meter,
+    .checklist-controls, .chronicle-builder { display: none !important; }
+    h2 { break-before: auto; margin-top: 1rem; margin-bottom: 0.5rem; }
+    h3 { margin-top: 0.75rem; margin-bottom: 0.3rem; }
+    h4 { margin-top: 0.5rem; margin-bottom: 0.2rem; }
+    details { break-inside: avoid; }
+    .variant-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .checklist li::before { border-color: #000; }
+    p { margin-bottom: 0.3rem; }
+    table { margin: 0.3rem 0 0.5rem; }
+    th, td { padding: 0.2rem 0.5rem; }
+  }
+
+  body.print-ref-only > *:not(#quick-ref-section):not(#qr-footer) { display: none !important; }
+  body.print-ref-only #quick-ref-section { margin-top: 0; }
+  body.print-ref-only #quick-ref-section h2 { margin-top: 0; }
+
+  @media print {
+    body.print-ref-only {
+      padding: 0.6cm;
+      font-size: 8.5pt;
+      line-height: 1.25;
+    }
+    body.print-ref-only #quick-ref-section {
+      margin: 0;
+    }
+    body.print-ref-only #quick-ref-section h2 {
+      font-size: 9pt;
+      margin-bottom: 0.3rem;
+      padding-bottom: 0.2rem;
+    }
+    body.print-ref-only .qr-box {
+      padding: 0.4cm;
+      border-width: 1.5pt;
+    }
+    body.print-ref-only .qr-box h3 {
+      font-size: 9pt;
+      margin-bottom: 0.3rem;
+      padding-bottom: 0.2rem;
+    }
+    body.print-ref-only h4 {
+      font-size: 7pt;
+      margin-top: 0.4rem;
+      margin-bottom: 0.15rem;
+    }
+    body.print-ref-only .checklist li {
+      padding: 0.15rem 0 0.15rem 1.4rem;
+      font-size: 8pt;
+    }
+    body.print-ref-only .checklist li::before {
+      width: 10px; height: 10px;
+      top: 0.3rem;
+    }
+    body.print-ref-only table {
+      font-size: 7.5pt;
+      margin: 0.15rem 0 0.3rem;
+    }
+    body.print-ref-only th, body.print-ref-only td {
+      padding: 0.1rem 0.3rem;
+    }
+    body.print-ref-only #qr-footer {
+      margin-top: 0.3rem;
+      font-size: 6.5pt;
+    }
+
+    body.print-chronicle-only {
+      padding: 1cm 1.2cm;
+    }
+    body.print-chronicle-only .chronicle-print-container {
+      display: block !important;
+    }
+  }
+
+  /* — Responsive — */
+  @media (max-width: 700px) {
+    body { padding: 1.5rem 1rem 4rem; }
+    .variant-grid { grid-template-columns: 1fr; }
+    .variant-switcher { width: 100%; }
+    .variant-switcher button { flex: 1; padding: 0.5rem 0.5rem; font-size: 0.65rem; }
+    td:first-child { white-space: normal; }
+    table { font-size: 0.82rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+    .budget-bar { grid-template-columns: repeat(5, 1fr); }
+    .budget-cell .budget-num { font-size: 1.1rem; }
+    .budget-cell .budget-label { font-size: 0.55rem; }
+    .spend-row { flex-wrap: wrap; }
+    .chronicle-field-row { grid-template-columns: 1fr; }
+    .chronicle-scores { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body id="top">
+
+<span class="section-label">House Rules Module v1.0</span>
+<h1>Legacy Mode: Between Threats</h1>
+<p class="subtitle">The 7th Citadel &middot; Serious Poulp &middot; 4-Player Campaign Variant</p>
+
+<!-- TOOLBAR -->
+<div class="toolbar no-print">
+  <div class="variant-switcher">
+    <button data-variant="conservative">Conservative</button>
+    <button data-variant="standard" class="active">Standard</button>
+    <button data-variant="generous">Generous</button>
+  </div>
+  <button onclick="printQuickRef()">Print Quick Ref</button>
+  <button onclick="printChronicle()">Print Chronicle</button>
+</div>
+
+<ul class="toc">
+  <li><span class="toc-label">A</span><a href="#executive-summary">Executive Summary</a></li>
+  <li><span class="toc-label">B</span><a href="#official-baseline">Official-Rule Baseline</a></li>
+  <li><span class="toc-label">C</span><a href="#legacy-rules">Legacy Mode Rules</a></li>
+  <li><span class="toc-label">D</span><a href="#transition-checklist">Post-Dadachem's Awakening Checklist</a></li>
+  <li><span class="toc-label">E</span><a href="#difficulty-variants">Difficulty Variants</a></li>
+  <li><span class="toc-label">F</span><a href="#balance-audit">Balance Audit</a></li>
+  <li><span class="toc-label">G</span><a href="#quick-reference">Printable Quick Reference</a></li>
+  <li><span class="toc-label">H</span><a href="#chronicle-builder">Chronicle Entry Builder</a></li>
+  <li><span class="toc-label">&mdash;</span><a href="#appendix-philosophy">Appendix: Design Philosophy</a></li>
+</ul>
+
+<!-- ================================================================ -->
+<h2 id="executive-summary">A. Executive Summary</h2>
+
+<p>
+  Legacy Mode converts your group's accomplishments in a completed Threat into a limited budget of <strong>Legacy Marks</strong>, spent from a curated menu to carry capped advantages into the next Threat. You still take a new Citadel Leaflet, reset your Action Decks, and play "A New Beginning" &mdash; but a few hard-won skills persist, a building or two stands ready, and your Chronicle records the story. Anti-snowball controls ensure each Threat remains dangerous. Three difficulty variants let you dial the system to your table.
+</p>
+
+<!-- ================================================================ -->
+<h2 id="official-baseline">B. Official-Rule Baseline</h2>
+
+<table>
+  <tr><th>Element</th><th>Official Rule</th></tr>
+  <tr><td>Citadel Leaflet</td><td>Archive old leaflet. Start a new one.</td></tr>
+  <tr><td>Action Decks</td><td>Return all cards to default starting state.</td></tr>
+  <tr><td>Advanced / Reflex Skills</td><td>Return to supply.</td></tr>
+  <tr><td>Purse cards</td><td>Return all.</td></tr>
+  <tr><td>Quest Items / Hope Reborn</td><td>Return all.</td></tr>
+  <tr><td>Buildings</td><td>None. Fresh leaflet.</td></tr>
+  <tr><td>Community scores</td><td>Reset to 0.</td></tr>
+  <tr><td>Destiny page</td><td>None. Fresh leaflet.</td></tr>
+  <tr><td>Side quests</td><td>All cleared.</td></tr>
+  <tr><td>Map / Terrain cards</td><td>Return all to box. Empty World Map.</td></tr>
+  <tr><td>Banished cards</td><td>Return to original decks.</td></tr>
+  <tr><td>Past</td><td>Return to Adventure Deck.</td></tr>
+  <tr><td>Starting scenario</td><td>Play "A New Beginning" from the new Threat booklet.</td></tr>
+</table>
+
+<details>
+  <summary>Why does the official rule require a total reset?</summary>
+  <div class="rationale">
+    <p>Each Threat is designed as a self-contained arc. The only thing that persists is what's in your head &mdash; map knowledge, puzzle solutions, system mastery. Designers intended this implicit carryover to be the only advantage.</p>
+  </div>
+</details>
+
+<!-- ================================================================ -->
+<h2 id="legacy-rules">C. Legacy Mode Rules</h2>
+
+<!-- C.1 -->
+<h3>C.1 &mdash; Earning Legacy Marks</h3>
+
+<p>After completing a Threat, tally your group's <strong>Legacy Marks</strong> using the calculator below. These are a shared group resource, not per-player.</p>
+
+<!-- INTERACTIVE EARN CALCULATOR -->
+<div class="calc-panel no-print" id="earn-panel">
+  <h4>Mark Calculator</h4>
+
+  <div class="calc-row">
+    <label>Threat transition</label>
+    <div class="calc-control">
+      <select class="calc-select" id="transition-select">
+        <option value="0">Threat 1 &rarr; 2</option>
+        <option value="1">Threat 2 &rarr; 3</option>
+        <option value="2">Threat 3 &rarr; 4</option>
+        <option value="3">Threat 4 &rarr; 5+</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="calc-row">
+    <label>Threat outcome</label>
+    <div class="calc-control">
+      <select class="calc-select" id="outcome-select">
+        <option value="3">Victory (+3)</option>
+        <option value="1">Failure (+1)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="calc-row">
+    <label>Side quests completed</label>
+    <div class="calc-control">
+      <div class="stepper">
+        <button onclick="stepVal('side-quests',-1)">&minus;</button>
+        <span class="stepper-val" id="side-quests">0</span>
+        <button onclick="stepVal('side-quests',1)">+</button>
+      </div>
+      <span class="calc-marks" id="side-quests-marks">0</span>
+    </div>
+  </div>
+
+  <div class="calc-row">
+    <input type="checkbox" id="earn-destiny13" onchange="recalcEarn()">
+    <label for="earn-destiny13">Destiny page: 13+ nodes checked</label>
+    <div class="calc-control"><span class="calc-marks">1</span></div>
+  </div>
+
+  <div class="calc-row">
+    <input type="checkbox" id="earn-destiny20" onchange="recalcEarn()">
+    <label for="earn-destiny20">Destiny page: 20+ nodes checked</label>
+    <div class="calc-control"><span class="calc-marks">1</span></div>
+  </div>
+
+  <div class="calc-row">
+    <label>Community scores that reached 15+</label>
+    <div class="calc-control">
+      <div class="stepper">
+        <button onclick="stepVal('comm15',-1)">&minus;</button>
+        <span class="stepper-val" id="comm15">0</span>
+        <button onclick="stepVal('comm15',1)">+</button>
+      </div>
+      <span class="calc-marks" id="comm15-marks">0</span>
+    </div>
+  </div>
+
+  <div class="calc-row">
+    <input type="checkbox" id="earn-balanced" onchange="recalcEarn()">
+    <label for="earn-balanced">All four community scores reached 10+</label>
+    <div class="calc-control"><span class="calc-marks">1</span></div>
+  </div>
+
+  <div class="calc-row">
+    <input type="checkbox" id="earn-buildings" onchange="recalcEarn()">
+    <label for="earn-buildings">Built 10+ buildings</label>
+    <div class="calc-control"><span class="calc-marks">1</span></div>
+  </div>
+
+  <div class="calc-row">
+    <input type="checkbox" id="earn-clean" onchange="recalcEarn()">
+    <label for="earn-clean">No character fell unconscious during final scenario</label>
+    <div class="calc-control"><span class="calc-marks">1</span></div>
+  </div>
+</div>
+
+<!-- BUDGET BAR -->
+<div class="budget-bar no-print" id="budget-bar">
+  <div class="budget-cell">
+    <span class="budget-label">Earned</span>
+    <span class="budget-num" id="bud-earned">0</span>
+  </div>
+  <div class="budget-cell">
+    <span class="budget-label">Cap</span>
+    <span class="budget-num" id="bud-cap">12</span>
+  </div>
+  <div class="budget-cell">
+    <span class="budget-label">Burden</span>
+    <span class="budget-num" id="bud-burden">0</span>
+  </div>
+  <div class="budget-cell">
+    <span class="budget-label">Available</span>
+    <span class="budget-num accent" id="bud-available">0</span>
+  </div>
+  <div class="budget-cell">
+    <span class="budget-label">Remaining</span>
+    <span class="budget-num accent" id="bud-remaining">0</span>
+  </div>
+</div>
+
+<details>
+  <summary>Why this scoring table?</summary>
+  <div class="rationale">
+    <p>The categories reward breadth (balanced scores, many side quests) over depth (maxing one track). This encourages the behaviors that make the game fun&mdash;exploring widely, engaging with side content&mdash;without rewarding hyper-optimization of a single axis. The cap means even a perfect run can't buy everything on the menu, forcing meaningful choices.</p>
+  </div>
+</details>
+
+<!-- C.2 -->
+<h3>C.2 &mdash; The Chronicle</h3>
+
+<p>Before dismantling anything, write a <strong>Chronicle entry</strong>. Zero mechanical effect &mdash; pure narrative continuity. Use the <a href="#chronicle-builder">Chronicle Builder</a> below, or write freeform.</p>
+
+<!-- C.3 -->
+<h3>C.3 &mdash; The Legacy Menu</h3>
+
+<p>Spend your Legacy Marks on the bonuses below. All choices are made as a group. Items marked <span class="tag tag-keep">PERSISTENT</span> last the entire Threat. Items marked <span class="tag tag-convert">SCENARIO 1</span> apply only to the first scenario, then expire.</p>
+
+<!-- INTERACTIVE SPEND TRACKER -->
+<div class="no-print" id="spend-tracker">
+  <div class="spend-header">
+    <span>Bonus</span>
+    <span>Cost &middot; Qty</span>
+  </div>
+
+  <!-- Veteran Skill -->
+  <div class="spend-row" data-item="veteranSkill" data-category="skills">
+    <div class="spend-info">
+      <div class="spend-name">Veteran Skill <span class="tag tag-keep">PERSISTENT</span></div>
+      <div class="spend-detail">1 Advanced Skill card &rarr; player's starting deck. <span data-limit="veteranSkill"></span></div>
+    </div>
+    <div class="spend-cost" data-cost="veteranSkill"></div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('veteranSkill',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-veteranSkill">0</span>
+        <button onclick="spendStep('veteranSkill',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reflex Memory -->
+  <div class="spend-row" data-item="reflexMemory" data-category="skills">
+    <div class="spend-info">
+      <div class="spend-name">Reflex Memory <span class="tag tag-keep">PERSISTENT</span></div>
+      <div class="spend-detail">1 Reflex Skill card &rarr; player's starting deck. <span data-limit="reflexMemory"></span></div>
+    </div>
+    <div class="spend-cost" data-cost="reflexMemory"></div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('reflexMemory',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-reflexMemory">0</span>
+        <button onclick="spendStep('reflexMemory',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Foundation Stone -->
+  <div class="spend-row" data-item="foundationStone" data-category="buildings">
+    <div class="spend-info">
+      <div class="spend-name">Foundation Stone <span class="tag tag-keep">PERSISTENT</span></div>
+      <div class="spend-detail">Pre-build 1 building on new leaflet. <span data-limit="foundationStone"></span></div>
+    </div>
+    <div class="spend-cost" data-cost="foundationStone"></div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('foundationStone',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-foundationStone">0</span>
+        <button onclick="spendStep('foundationStone',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Standing -->
+  <div class="spend-row" data-item="communityStanding" data-category="community">
+    <div class="spend-info">
+      <div class="spend-name">Community Standing <span class="tag tag-convert">DECAYING</span></div>
+      <div class="spend-detail">Start 1 community score at <span data-commstart></span>. Decays by 1/scenario. <span data-limit="communityStanding"></span></div>
+    </div>
+    <div class="spend-cost" data-cost="communityStanding"></div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('communityStanding',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-communityStanding">0</span>
+        <button onclick="spendStep('communityStanding',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Heirloom -->
+  <div class="spend-row" data-item="heirloom" data-category="heirlooms">
+    <div class="spend-info">
+      <div class="spend-name">Heirloom <span class="tag tag-keep">PERSISTENT</span></div>
+      <div class="spend-detail">1 Purse card from previous Threat. Must respect weight limits. <span data-limit="heirloom"></span></div>
+    </div>
+    <div class="spend-cost" data-cost="heirloom"></div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('heirloom',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-heirloom">0</span>
+        <button onclick="spendStep('heirloom',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trailblazer -->
+  <div class="spend-row" data-item="trailblazer" data-category="boons">
+    <div class="spend-info">
+      <div class="spend-name">Trailblazer <span class="tag tag-convert">SCENARIO 1</span></div>
+      <div class="spend-detail">&minus;1 draw cost on exploration-flip actions, Scenario 1 only.</div>
+    </div>
+    <div class="spend-cost" data-cost="trailblazer"></div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('trailblazer',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-trailblazer">0</span>
+        <button onclick="spendStep('trailblazer',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Survivor's Grit -->
+  <div class="spend-row" data-item="survivorsGrit" data-category="boons">
+    <div class="spend-info">
+      <div class="spend-name">Survivor's Grit <span class="tag tag-convert">SCENARIO 1</span></div>
+      <div class="spend-detail">+5 LP per player, Scenario 1 only.</div>
+    </div>
+    <div class="spend-cost" data-cost="survivorsGrit"></div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('survivorsGrit',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-survivorsGrit">0</span>
+        <button onclick="spendStep('survivorsGrit',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alchemist's Insight -->
+  <div class="spend-row" data-item="alchemistsInsight" data-category="boons">
+    <div class="spend-info">
+      <div class="spend-name">Alchemist's Insight <span class="tag tag-convert">SCENARIO 1</span></div>
+      <div class="spend-detail">+1 card on each player's first Recovery.</div>
+    </div>
+    <div class="spend-cost" data-cost="alchemistsInsight"></div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('alchemistsInsight',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-alchemistsInsight">0</span>
+        <button onclick="spendStep('alchemistsInsight',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unfinished Business -->
+  <div class="spend-row" data-item="unfinishedBusiness" data-category="narrative">
+    <div class="spend-info">
+      <div class="spend-name">Unfinished Business <span class="tag tag-record">NARRATIVE</span></div>
+      <div class="spend-detail">Record up to 3 incomplete side quests. Narrative only.</div>
+    </div>
+    <div class="spend-cost">0</div>
+    <div class="spend-control">
+      <div class="stepper">
+        <button onclick="spendStep('unfinishedBusiness',-1)">&minus;</button>
+        <span class="stepper-val" id="qty-unfinishedBusiness">0</span>
+        <button onclick="spendStep('unfinishedBusiness',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="categories-meter" id="categories-meter">
+    Categories used: <strong><span id="cats-used">0</span> / <span id="cats-max">4</span></strong>
+  </div>
+
+  <div class="spend-warning" id="spend-warning"></div>
+</div>
+
+<details>
+  <summary>Why these prices and limits?</summary>
+  <div class="rationale">
+    <p><strong>Veteran Skill / Reflex Memory (2 marks, cap 3 total):</strong> Even one extra skill is significant. Capping at 3 across 4 players means someone goes without, creating a drafting decision.</p>
+    <p><strong>Foundation Stone (3 marks, cap 2, no Academy/Guild):</strong> Per-scenario stat bonuses compound. The high cost (25% of budget) and exclusion of progression-accelerating buildings keeps this in check.</p>
+    <p><strong>Community Standing (2 marks, decaying):</strong> Starting a score at 3 gives a modest head start, but decay erases it by Scenario 4.</p>
+    <p><strong>Heirloom (2 marks, cap 2):</strong> A character's signature weapon &mdash; flavorful but limited by weight.</p>
+    <p><strong>Scenario 1 boons (1 mark each):</strong> Cheap because temporary. Smooth early scarcity without affecting mid/late power.</p>
+    <p><strong>Unfinished Business (free):</strong> Pure narrative. Acknowledges that side quests can't be completed in one Threat without granting mechanical shortcuts.</p>
+  </div>
+</details>
+
+<h4>Mutual Exclusivity Rule</h4>
+<p>You may spend marks in <strong>at most <span data-variant-val="maxCategories">4</span> different categories</strong>. This forces prioritization: you can't have everything.</p>
+
+<!-- C.4 -->
+<h3>C.4 &mdash; Full Carryover Matrix</h3>
+
+<table>
+  <tr><th>Element</th><th>Action</th><th>Balance Risk</th></tr>
+  <tr>
+    <td>Character cards</td>
+    <td><span class="tag tag-keep">KEEP</span> Same characters, same player assignments.</td>
+    <td>None.</td>
+  </tr>
+  <tr>
+    <td>Action Decks</td>
+    <td><span class="tag tag-reset">FULL RESET</span> Return to default 15-card starting decks.</td>
+    <td>Critical. #1 snowball vector.</td>
+  </tr>
+  <tr>
+    <td>Advanced Skills</td>
+    <td><span class="tag tag-convert">LEGACY MENU</span> Up to <span data-variant-val="skillTotal">3</span> total via Veteran Skill / Reflex Memory.</td>
+    <td>Moderate. Capped.</td>
+  </tr>
+  <tr>
+    <td>Discard Piles</td>
+    <td><span class="tag tag-reset">FULL RESET</span></td>
+    <td>None.</td>
+  </tr>
+  <tr>
+    <td>Skill cards in hand</td>
+    <td><span class="tag tag-reset">FULL RESET</span></td>
+    <td>None.</td>
+  </tr>
+  <tr>
+    <td>Purse / Equipment</td>
+    <td><span class="tag tag-convert">LEGACY MENU</span> Up to <span data-variant-val="heirloomTotal">2</span> total via Heirloom.</td>
+    <td>Low&ndash;moderate.</td>
+  </tr>
+  <tr>
+    <td>Quest Items</td>
+    <td><span class="tag tag-reset">FULL RESET</span> Including Hope Reborn cards.</td>
+    <td>High. Hope Reborn IS Destiny currency.</td>
+  </tr>
+  <tr>
+    <td>Citadel Leaflet</td>
+    <td><span class="tag tag-reset">NEW LEAFLET</span> Archive old one.</td>
+    <td>Required.</td>
+  </tr>
+  <tr>
+    <td>Buildings</td>
+    <td><span class="tag tag-convert">LEGACY MENU</span> Up to 2 via Foundation Stone.</td>
+    <td>Moderate&ndash;high.</td>
+  </tr>
+  <tr>
+    <td>Community scores</td>
+    <td><span class="tag tag-convert">LEGACY MENU</span> Up to 2 scores start at <span data-commstart></span> (decaying).</td>
+    <td>Moderate.</td>
+  </tr>
+  <tr>
+    <td>Destiny page</td>
+    <td><span class="tag tag-reset">FULL RESET</span></td>
+    <td>Critical. The Destiny page IS the progression system.</td>
+  </tr>
+  <tr>
+    <td>Map / Terrain</td>
+    <td><span class="tag tag-reset">FULL RESET</span> Return all. Empty World Map.</td>
+    <td>High. Player memory is already powerful.</td>
+  </tr>
+  <tr>
+    <td>Banished cards</td>
+    <td><span class="tag tag-reset">FULL RESET</span></td>
+    <td>Critical. Missing cards break puzzles.</td>
+  </tr>
+  <tr>
+    <td>Past cards</td>
+    <td><span class="tag tag-reset">FULL RESET</span></td>
+    <td>Required.</td>
+  </tr>
+  <tr>
+    <td>Side quests</td>
+    <td><span class="tag tag-record">RECORD</span> Earn marks for completed. Log incomplete ones.</td>
+    <td>Low. Narrative only.</td>
+  </tr>
+  <tr>
+    <td>Groundshiver</td>
+    <td><span class="tag tag-reset">FULL RESET</span></td>
+    <td>None.</td>
+  </tr>
+  <tr>
+    <td>Life points</td>
+    <td><span class="tag tag-reset">FULL RESET</span></td>
+    <td>Survivor's Grit adds +5 LP for Sc.1 if purchased.</td>
+  </tr>
+  <tr>
+    <td>Narrative memory</td>
+    <td><span class="tag tag-record">CHRONICLE</span></td>
+    <td>None. Emotional core of the system.</td>
+  </tr>
+</table>
+
+<details>
+  <summary>Why are some elements fully reset while others convert?</summary>
+  <div class="rationale">
+    <p>Elements that define the power curve (Action Decks, Destiny page, banished cards) must reset &mdash; carrying them is the proven path to trivializing later Threats. Elements with bounded impact (a single skill, one building) can safely convert through the Legacy Menu at controlled prices. Narrative elements carry for free because they have zero mechanical weight.</p>
+  </div>
+</details>
+
+<!-- C.5 -->
+<h3>C.5 &mdash; Anti-Snowball Controls</h3>
+
+<h4>1. Legacy Mark cap</h4>
+<p>Never more than <strong><span data-variant-val="markCap">12</span> Legacy Marks</strong> per transition, regardless of how many you earned.</p>
+
+<h4>2. Burden tax</h4>
+<table id="burden-table">
+  <tr><th>Transition</th><th>Burden Tax</th><th>Effective Budget</th></tr>
+  <tr><td>Threat 1 &rarr; 2</td><td class="cost-cell" data-burden-row="0">0</td><td data-eff-row="0"></td></tr>
+  <tr><td>Threat 2 &rarr; 3</td><td class="cost-cell" data-burden-row="1">2</td><td data-eff-row="1"></td></tr>
+  <tr><td>Threat 3 &rarr; 4</td><td class="cost-cell" data-burden-row="2">4</td><td data-eff-row="2"></td></tr>
+  <tr><td>Threat 4 &rarr; 5+</td><td class="cost-cell" data-burden-row="3">6</td><td data-eff-row="3"></td></tr>
+</table>
+
+<h4>3. Mutual exclusivity</h4>
+<p>At most <strong><span data-variant-val="maxCategories">4</span> different menu categories</strong> per transition.</p>
+
+<h4>4. Decay</h4>
+<p>Community Standing decays by 1/scenario. Scenario-1 boons expire after Scenario 1. By midgame, legacy advantages dissolve into normal play.</p>
+
+<h4>5. Skill cap across Threats</h4>
+<p>A player may never start a Threat with more than <strong>2 legacy skill cards</strong> in their deck (combined across all prior Threats).</p>
+
+<h4>6. Mid-Threat corrections</h4>
+<p>If the next Threat feels too easy after 2&ndash;3 scenarios:</p>
+<ul>
+  <li>Switch Recovery to Survival mode (2 LP per 3 cards instead of 1 per 2).</li>
+  <li>Reduce starting LP by 5/player for subsequent scenarios.</li>
+  <li>Remove 1 legacy skill from each deck.</li>
+  <li>Un-build 1 Foundation Stone building.</li>
+</ul>
+
+<a href="#top" class="back-to-top">&uarr; top</a>
+
+<!-- ================================================================ -->
+<h2 id="transition-checklist">D. Post-Dadachem's Awakening Transition Checklist</h2>
+
+<p><em>Do these in order. Estimated time: 15&ndash;20 minutes.</em></p>
+
+<div class="checklist-controls no-print">
+  <span class="checklist-progress" id="cl-progress">0 / 16</span>
+  <button onclick="resetChecklist()">Reset</button>
+</div>
+
+<h3>Phase 1 &mdash; Record</h3>
+<ul class="i-checklist" id="i-checklist">
+  <li data-cl="1.1"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">1.1</span> <strong>Write your Chronicle entry.</strong> Use the <a href="#chronicle-builder">builder</a> or write freeform.</span></li>
+  <li data-cl="1.2"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">1.2</span> <strong>Tally Legacy Marks.</strong> Use the calculator above. Record in Chronicle.</span></li>
+  <li data-cl="1.3"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">1.3</span> <strong>Set aside cards to carry</strong> (Veteran Skills, Reflex Memory, Heirlooms). Face-up.</span></li>
+</ul>
+
+<h3>Phase 2 &mdash; Reset</h3>
+<ul class="i-checklist">
+  <li data-cl="2.1"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.1</span> Return ALL Past cards &rarr; Adventure Deck.</span></li>
+  <li data-cl="2.2"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.2</span> Return ALL banished cards &rarr; original decks.</span></li>
+  <li data-cl="2.3"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.3</span> Return ALL map/terrain cards &rarr; box. Empty World Map.</span></li>
+  <li data-cl="2.4"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.4</span> Return ALL Quest Items + Hope Reborn &rarr; supply.</span></li>
+  <li data-cl="2.5"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.5</span> Return ALL Purse cards (except Heirlooms) &rarr; supply.</span></li>
+  <li data-cl="2.6"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.6</span> Return ALL Advanced/Reflex Skills (except veteran picks) &rarr; supply.</span></li>
+  <li data-cl="2.7"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.7</span> Rebuild each player's Action Deck to default 15 + legacy skills.</span></li>
+  <li data-cl="2.8"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.8</span> Clear all discard piles and hands.</span></li>
+  <li data-cl="2.9"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">2.9</span> Archive old Citadel Leaflet &rarr; Chronicle folder.</span></li>
+</ul>
+
+<h3>Phase 3 &mdash; Spend Legacy Marks</h3>
+<ul class="i-checklist">
+  <li data-cl="3.1"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">3.1</span> Subtract Burden Tax (0 for first transition).</span></li>
+  <li data-cl="3.2"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">3.2</span> Spend marks on Legacy Menu (use tracker above). Record in Chronicle.</span></li>
+  <li data-cl="3.3"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">3.3</span> Apply to new leaflet: pre-check buildings, write community scores.</span></li>
+  <li data-cl="3.4"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">3.4</span> Distribute cards: Heirlooms to players, legacy skills into decks. Shuffle.</span></li>
+</ul>
+
+<h3>Phase 4 &mdash; Begin</h3>
+<ul class="i-checklist">
+  <li data-cl="4.1"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">4.1</span> Read previous Chronicle entry aloud.</span></li>
+  <li data-cl="4.2"><input type="checkbox" onchange="toggleCheck(this)"><span class="check-text"><span class="step-num">4.2</span> Open next Threat booklet. Play "A New Beginning" with legacy bonuses active.</span></li>
+</ul>
+
+<a href="#top" class="back-to-top">&uarr; top</a>
+
+<!-- ================================================================ -->
+<h2 id="difficulty-variants">E. Difficulty Variants</h2>
+
+<div class="variant-grid">
+  <div class="variant-card" id="vc-conservative">
+    <h4>Conservative</h4>
+    <p><em>Closest to official balance.</em></p>
+    <ul>
+      <li>Max 8 Legacy Marks</li>
+      <li>Burden tax: 0 / 3 / 5 / 7</li>
+      <li>Max 2 menu categories</li>
+      <li>No Foundation Stone</li>
+      <li>Skill cap: 1/player, 2 total</li>
+      <li>No Heirlooms</li>
+      <li>No Community Standing</li>
+    </ul>
+  </div>
+  <div class="variant-card recommended" id="vc-standard">
+    <h4>Standard (Recommended)</h4>
+    <p><em>Meaningful continuity, controlled power.</em></p>
+    <ul>
+      <li>Max 12 Legacy Marks</li>
+      <li>Burden tax: 0 / 2 / 4 / 6</li>
+      <li>Max 4 menu categories</li>
+      <li>Full menu access</li>
+      <li>Skill cap: 1/player, 3 total</li>
+      <li>Max 2 Heirlooms</li>
+      <li>Community Standing: start at 3</li>
+    </ul>
+  </div>
+  <div class="variant-card" id="vc-generous">
+    <h4>Generous</h4>
+    <p><em>More power, still controlled.</em></p>
+    <ul>
+      <li>Max 16 Legacy Marks</li>
+      <li>Burden tax: 0 / 1 / 2 / 3</li>
+      <li>Max 5 menu categories</li>
+      <li>Academy/Guild allowed</li>
+      <li>Skill cap: 2/player, 5 total</li>
+      <li>Max 4 Heirlooms (1/player)</li>
+      <li>Community Standing: start at 5</li>
+    </ul>
+  </div>
+</div>
+
+<h3>E.1 &mdash; Dadachem's Awakening Recommendation</h3>
+
+<div class="callout">
+  <strong>Use Standard Legacy Mode.</strong> Burden Tax is 0 (first transition). You likely earned 7&ndash;10 marks.
+</div>
+
+<h4>Recommended spend (est. 8&ndash;10 marks):</h4>
+<table>
+  <tr><th>Purchase</th><th>Cost</th><th>Why</th></tr>
+  <tr>
+    <td>2&times; Veteran Skill</td>
+    <td class="cost-cell">4</td>
+    <td>Two players keep their most-valued Advanced Skill. The other two start clean.</td>
+  </tr>
+  <tr>
+    <td>1&times; Foundation Stone</td>
+    <td class="cost-cell">3</td>
+    <td>Pre-build Tavern (unlocks side quests early) or Watchtower (+1 Influence/scenario).</td>
+  </tr>
+  <tr>
+    <td>1&times; Trailblazer</td>
+    <td class="cost-cell">1</td>
+    <td>Smooths Scenario 1 exploration. Cheap, temporary.</td>
+  </tr>
+  <tr>
+    <td>1&times; Survivor's Grit</td>
+    <td class="cost-cell">1</td>
+    <td>+5 LP buffer for Scenario 1.</td>
+  </tr>
+  <tr>
+    <td><strong>Total</strong></td>
+    <td class="cost-cell"><strong>9</strong></td>
+    <td>Leaves 1&ndash;3 marks unspent.</td>
+  </tr>
+</table>
+
+<details>
+  <summary>Expected difficulty shift by phase</summary>
+  <div class="rationale">
+    <p><strong>Scenario 1:</strong> ~5&ndash;10% easier (all bonuses active). <strong>Scenarios 2&ndash;3:</strong> ~3&ndash;5% easier (boons gone, building is +1 stat, 2 skills in 2 of 4 decks). <strong>Mid-to-late:</strong> ~0% (natural progression eclipses legacy bonuses &mdash; 2 skills are lost in decks of 30+).</p>
+  </div>
+</details>
+
+<a href="#top" class="back-to-top">&uarr; top</a>
+
+<!-- ================================================================ -->
+<h2 id="balance-audit">F. Balance Audit</h2>
+
+<h3>F.1 &mdash; Risk Matrix</h3>
+<table>
+  <tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr>
+  <tr><td>Veteran Skill too strong</td><td>Medium</td><td>1-per-player cap. Exclude skills granting free draws if dominant.</td></tr>
+  <tr><td>Foundation Stone (Tavern) unlocks quests too early</td><td>Low&ndash;Med</td><td>Quests still require completion. Swap to Watchtower if wrong.</td></tr>
+  <tr><td>Map memory + Trailblazer trivializes Sc.1</td><td>Low</td><td>Trailblazer saves ~1 draw per flip for one scenario. Drop if needed.</td></tr>
+  <tr><td>Generous: Academy accelerates progression</td><td>High</td><td>Excluded from Standard for this reason.</td></tr>
+  <tr><td>Heirloom unexpectedly powerful</td><td>Low</td><td>Weight limits prevent stacking. "Damaged in transit" escape valve.</td></tr>
+  <tr><td>Burden tax feels punitive by Threat 4+</td><td>Medium</td><td>Intentional plateau. Reduce by 1/tier if too tight.</td></tr>
+</table>
+
+<details>
+  <summary>What might be too generous / too stingy?</summary>
+  <div class="rationale">
+    <p><strong>Potentially too generous:</strong> Foundation Stone at 3 marks may be underpriced (per-scenario +1 stat for entire Threat). Community Standing at 3 could unlock score-gated events in Sc.1 that were meant to be earned.</p>
+    <p><strong>Potentially too stingy:</strong> Only 3 skills across 4 players (one player gets nothing &mdash; by design, counter with Heirloom). Full Destiny reset is the harshest rule (necessary, but Chronicle honors that work). No map carryover (handwritten notes are the compromise).</p>
+  </div>
+</details>
+
+<h3>F.2 &mdash; What to watch (first 2&ndash;3 scenarios)</h3>
+<ol>
+  <li>Are action checks too easy? (Veteran skills providing consistent margin &rarr; remove one.)</li>
+  <li>Is Scenario 1 too fast? (Under 1 hour vs. intended 1.5&ndash;3 &rarr; drop boons next time.)</li>
+  <li>Community scores hitting gates too early? (Note which building/score caused it.)</li>
+  <li>Group feels overpowered or underpowered? (Use mid-Threat dials in C.5.)</li>
+</ol>
+
+<details>
+  <summary>Adjustment levers</summary>
+  <div class="rationale">
+    <p><strong>If too easy:</strong> Switch to Survival recovery. Remove 1 legacy skill/player. Erase 1 Foundation Stone building. Reduce starting LP by 5/player. Next transition: switch to Conservative.</p>
+    <p><strong>If too punishing:</strong> Switch to Story recovery. Grant each player 1 free Advanced Skill after Sc.2. Add 1 bonus mark to next budget. Next transition: switch to Generous.</p>
+  </div>
+</details>
+
+<a href="#top" class="back-to-top">&uarr; top</a>
+
+<!-- ================================================================ -->
+<div id="quick-ref-section">
+<h2 id="quick-reference">G. Printable Quick Reference</h2>
+
+<p class="no-print"><em>Use the "Print Quick Ref" button above to print only this section.</em></p>
+
+<hr>
+
+<div class="qr-box" style="border: 2px solid var(--black); padding: 1.25rem; font-size: 0.82rem; page-break-inside: avoid;">
+
+<h3 style="margin-top: 0; text-align: center; font-size: 1rem; border-bottom: 2px solid var(--black); padding-bottom: 0.4rem; margin-bottom: 0.75rem;">LEGACY MODE &mdash; BETWEEN THREATS</h3>
+
+<h4 style="margin-top: 0;">1. Record</h4>
+<ul class="checklist" style="margin-bottom: 0.75rem;">
+  <li>Write Chronicle entry (outcome, roster, scores, buildings, quests, map notes)</li>
+  <li>Tally Legacy Marks (see scoring). Cap at <span data-variant-val="markCap">12</span>.</li>
+  <li>Set aside cards to carry (skills, heirlooms)</li>
+</ul>
+
+<h4>2. Reset</h4>
+<ul class="checklist" style="margin-bottom: 0.75rem;">
+  <li>Return Past, banished, map, terrain, Quest Items, Hope Reborn &rarr; decks</li>
+  <li>Return Purse (except heirlooms) + Advanced/Reflex Skills (except veterans) &rarr; supply</li>
+  <li>Rebuild Action Decks to default 15 + legacy skills. Clear hands &amp; discards.</li>
+  <li>Archive old Citadel Leaflet</li>
+</ul>
+
+<h4>3. Spend Marks</h4>
+<ul class="checklist" style="margin-bottom: 0.75rem;">
+  <li>Subtract Burden Tax (0 first time, then per variant)</li>
+  <li>Buy from Legacy Menu. Max <span data-variant-val="maxCategories">4</span> categories.</li>
+  <li>Pre-check buildings + write community scores on new leaflet</li>
+  <li>Distribute Heirlooms + insert legacy skills. Shuffle.</li>
+</ul>
+
+<h4>4. Begin</h4>
+<ul class="checklist" style="margin-bottom: 0.5rem;">
+  <li>Read Chronicle aloud</li>
+  <li>Open new Threat booklet &rarr; "A New Beginning"</li>
+</ul>
+
+<h4 style="margin-top: 0.75rem;">Legacy Menu (<span data-variant-val="label">Standard</span>)</h4>
+<table style="font-size: 0.78rem; margin-bottom: 0;">
+  <tr><th>Bonus</th><th>Cost</th><th>Limit</th></tr>
+  <tr><td>Veteran Skill (1 Adv. Skill &rarr; deck)</td><td class="cost-cell">2</td><td><span data-variant-val="skillPerPlayer">1</span>/player, <span data-variant-val="skillTotal">3</span> total</td></tr>
+  <tr><td>Reflex Memory (1 Reflex &rarr; deck)</td><td class="cost-cell">2</td><td>Shares cap w/ above</td></tr>
+  <tr><td>Foundation Stone (pre-build 1 building)</td><td class="cost-cell">3</td><td>Max 2. <span data-variant-val="buildingNote">No Academy/Guild.</span></td></tr>
+  <tr><td>Community Standing (1 score @ <span data-commstart></span>)</td><td class="cost-cell">2</td><td>Max 2. Decays.</td></tr>
+  <tr><td>Heirloom (1 Purse card)</td><td class="cost-cell">2</td><td>1/player, <span data-variant-val="heirloomTotal">2</span> total</td></tr>
+  <tr><td>Trailblazer (&minus;1 explore, Sc.1)</td><td class="cost-cell">1</td><td>Once.</td></tr>
+  <tr><td>Survivor's Grit (+5 LP, Sc.1)</td><td class="cost-cell">1</td><td>Once.</td></tr>
+  <tr><td>Alchemist's Insight (+1 Recovery, Sc.1)</td><td class="cost-cell">1</td><td>Once.</td></tr>
+  <tr><td>Unfinished Business (record 3 quests)</td><td class="cost-cell">0</td><td>Narrative.</td></tr>
+</table>
+
+</div>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="chronicle-builder">H. Chronicle Entry Builder</h2>
+
+<p>Fill in the fields below, then hit <strong>Print Chronicle</strong> for a clean one-page record.</p>
+
+<div class="chronicle-builder no-print" id="chronicle-form">
+  <h4>Chronicle Entry</h4>
+
+  <div class="chronicle-field-row">
+    <div class="chronicle-field">
+      <label for="chron-threat">Threat Name</label>
+      <input type="text" id="chron-threat" placeholder="e.g., Dadachem's Awakening">
+    </div>
+    <div class="chronicle-field">
+      <label for="chron-outcome">Outcome</label>
+      <select id="chron-outcome">
+        <option value="Victory">Victory</option>
+        <option value="Defeat">Defeat</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="chronicle-field">
+    <label for="chron-how">How did it end?</label>
+    <textarea id="chron-how" rows="2" placeholder="Brief narrative of the final moments"></textarea>
+  </div>
+
+  <div class="chronicle-field">
+    <label>Character Roster (Player &rarr; Character)</label>
+    <div class="chronicle-field-row">
+      <input type="text" id="chron-p1" placeholder="Player 1 — Character">
+      <input type="text" id="chron-p2" placeholder="Player 2 — Character">
+    </div>
+    <div class="chronicle-field-row" style="margin-top: 0.4rem;">
+      <input type="text" id="chron-p3" placeholder="Player 3 — Character">
+      <input type="text" id="chron-p4" placeholder="Player 4 — Character">
+    </div>
+  </div>
+
+  <div class="chronicle-field">
+    <label>Final Community Scores</label>
+    <div class="chronicle-scores">
+      <input type="number" id="chron-score1" min="0" max="25" placeholder="Score 1">
+      <input type="number" id="chron-score2" min="0" max="25" placeholder="Score 2">
+      <input type="number" id="chron-score3" min="0" max="25" placeholder="Score 3">
+      <input type="number" id="chron-score4" min="0" max="25" placeholder="Score 4">
+    </div>
+  </div>
+
+  <div class="chronicle-field">
+    <label for="chron-buildings">Buildings Constructed</label>
+    <textarea id="chron-buildings" rows="2" placeholder="List buildings (e.g., Tavern, Watchtower, Grain Silo...)"></textarea>
+  </div>
+
+  <div class="chronicle-field-row">
+    <div class="chronicle-field">
+      <label for="chron-sidequests-done">Side Quests Completed</label>
+      <textarea id="chron-sidequests-done" rows="2" placeholder="Completed quests"></textarea>
+    </div>
+    <div class="chronicle-field">
+      <label for="chron-sidequests-open">Side Quests Unfinished</label>
+      <textarea id="chron-sidequests-open" rows="2" placeholder="Incomplete quests"></textarea>
+    </div>
+  </div>
+
+  <div class="chronicle-field">
+    <label for="chron-discoveries">Key Discoveries &amp; Lore</label>
+    <textarea id="chron-discoveries" rows="2" placeholder="Locations, NPCs, lore that felt important"></textarea>
+  </div>
+
+  <div class="chronicle-field">
+    <label for="chron-regrets">Regrets &amp; Unfinished Business</label>
+    <textarea id="chron-regrets" rows="2" placeholder="What do you wish you'd done?"></textarea>
+  </div>
+
+  <div class="chronicle-field">
+    <label for="chron-mapnotes">Map Notes</label>
+    <textarea id="chron-mapnotes" rows="2" placeholder="Locations to remember, sketch references"></textarea>
+  </div>
+
+  <div class="chronicle-field-row">
+    <div class="chronicle-field">
+      <label for="chron-marks-earned">Legacy Marks Earned</label>
+      <input type="number" id="chron-marks-earned" min="0" max="20" placeholder="0">
+    </div>
+    <div class="chronicle-field">
+      <label for="chron-marks-spent">Legacy Marks Spent On</label>
+      <input type="text" id="chron-marks-spent" placeholder="e.g., 2× Veteran Skill, 1× Foundation Stone">
+    </div>
+  </div>
+</div>
+
+<!-- Chronicle print layout (hidden, rendered on print) -->
+<div class="chronicle-print-container">
+  <div class="chronicle-print" id="chronicle-print-content">
+    <!-- Populated by JS -->
+  </div>
+</div>
+
+<a href="#top" class="back-to-top no-print">&uarr; top</a>
+
+<!-- ================================================================ -->
+<h2 id="appendix-philosophy">Appendix: Design Philosophy</h2>
+
+<details>
+  <summary>Design goals</summary>
+  <div class="rationale">
+    <p><strong>Continuity:</strong> Your group's identity, choices, and accomplishments should echo forward.</p>
+    <p><strong>Earned progress:</strong> Players who explored deeply should feel rewarded.</p>
+    <p><strong>Character identity:</strong> Keep the same characters. They grew. Honor that.</p>
+    <p><strong>Challenge:</strong> The next Threat must remain tense, resource-scarce, and dangerous.</p>
+    <p><strong>Freshness:</strong> Discovery, exploration, and uncertainty must be preserved.</p>
+    <p><strong>Low bookkeeping:</strong> 15&ndash;20 minutes, not an hour of accounting.</p>
+  </div>
+</details>
+
+<details>
+  <summary>Design constraints</summary>
+  <div class="rationale">
+    <p><strong>No runaway power curve.</strong> A player who carried everything forward reported "absolutely overkilling" by mid-Threat&nbsp;2 with 50+ Skill cards.</p>
+    <p><strong>No trivializing early survival.</strong> Opening scenarios are designed around resource scarcity.</p>
+    <p><strong>No breaking Threat setup.</strong> Banished cards and certain map states are load-bearing.</p>
+    <p><strong>No skipping gated content.</strong> High community scores could bypass designed-to-be-earned story branches.</p>
+    <p><strong>No spoiler contamination.</strong> Carryover decisions must not require knowledge of future Threats.</p>
+    <p><strong>No excessive bookkeeping.</strong> If it takes longer than shuffling, it's too complex.</p>
+  </div>
+</details>
+
+<div class="callout">
+  <strong>Core Principle: "Remember, Don't Replay"</strong>
+  Convert mechanical power into narrative memory + limited legacy tokens. You don't carry your fortress; you carry the wisdom of having built one.
+</div>
+
+<hr>
+
+<p id="qr-footer" style="text-align: center; font-size: 0.75rem; color: var(--grey-400); margin-top: 2rem;">
+  Legacy Mode v1.0 &middot; House rules for The 7th Citadel by Serious Poulp &middot; Not affiliated with Serious Poulp
+</p>
+
+<script>
+// ============================
+// VARIANT DATA
+// ============================
+const VARIANTS = {
+  conservative: {
+    label: 'Conservative',
+    markCap: 8,
+    burden: [0, 3, 5, 7],
+    maxCategories: 2,
+    skillPerPlayer: 1, skillTotal: 2,
+    heirloomTotal: 0,
+    foundationMax: 0,
+    communityStandingMax: 0,
+    communityStart: 0,
+    buildingNote: 'Not available.',
+    menu: {
+      veteranSkill:      { cost: 2, max: 2, available: true },
+      reflexMemory:      { cost: 2, max: 0, available: true },
+      foundationStone:   { cost: 3, max: 0, available: false },
+      communityStanding: { cost: 2, max: 0, available: false },
+      heirloom:          { cost: 2, max: 0, available: false },
+      trailblazer:       { cost: 1, max: 1, available: true },
+      survivorsGrit:     { cost: 1, max: 1, available: true },
+      alchemistsInsight: { cost: 1, max: 1, available: true },
+      unfinishedBusiness:{ cost: 0, max: 1, available: true },
+    }
+  },
+  standard: {
+    label: 'Standard',
+    markCap: 12,
+    burden: [0, 2, 4, 6],
+    maxCategories: 4,
+    skillPerPlayer: 1, skillTotal: 3,
+    heirloomTotal: 2,
+    foundationMax: 2,
+    communityStandingMax: 2,
+    communityStart: 3,
+    buildingNote: 'No Academy/Guild.',
+    menu: {
+      veteranSkill:      { cost: 2, max: 3, available: true },
+      reflexMemory:      { cost: 2, max: 3, available: true },
+      foundationStone:   { cost: 3, max: 2, available: true },
+      communityStanding: { cost: 2, max: 2, available: true },
+      heirloom:          { cost: 2, max: 2, available: true },
+      trailblazer:       { cost: 1, max: 1, available: true },
+      survivorsGrit:     { cost: 1, max: 1, available: true },
+      alchemistsInsight: { cost: 1, max: 1, available: true },
+      unfinishedBusiness:{ cost: 0, max: 1, available: true },
+    }
+  },
+  generous: {
+    label: 'Generous',
+    markCap: 16,
+    burden: [0, 1, 2, 3],
+    maxCategories: 5,
+    skillPerPlayer: 2, skillTotal: 5,
+    heirloomTotal: 4,
+    foundationMax: 2,
+    communityStandingMax: 2,
+    communityStart: 5,
+    buildingNote: 'Academy/Guild allowed.',
+    menu: {
+      veteranSkill:      { cost: 2, max: 5, available: true },
+      reflexMemory:      { cost: 2, max: 5, available: true },
+      foundationStone:   { cost: 3, max: 2, available: true },
+      communityStanding: { cost: 2, max: 2, available: true },
+      heirloom:          { cost: 2, max: 4, available: true },
+      trailblazer:       { cost: 1, max: 1, available: true },
+      survivorsGrit:     { cost: 1, max: 1, available: true },
+      alchemistsInsight: { cost: 1, max: 1, available: true },
+      unfinishedBusiness:{ cost: 0, max: 1, available: true },
+    }
+  }
+};
+
+let currentVariant = 'standard';
+let spendQty = {};
+
+function getV() { return VARIANTS[currentVariant]; }
+
+// ============================
+// VARIANT SWITCHER
+// ============================
+document.querySelectorAll('.variant-switcher button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.variant-switcher button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentVariant = btn.dataset.variant;
+
+    document.querySelectorAll('.variant-card').forEach(c => c.classList.remove('recommended'));
+    const vc = document.getElementById('vc-' + currentVariant);
+    if (vc) vc.classList.add('recommended');
+
+    resetSpend();
+    updateVariantValues();
+    recalcEarn();
+  });
+});
+
+function updateVariantValues() {
+  const v = getV();
+
+  document.querySelectorAll('[data-variant-val]').forEach(el => {
+    const key = el.dataset.variantVal;
+    if (v[key] !== undefined) el.textContent = v[key];
+  });
+
+  document.querySelectorAll('[data-commstart]').forEach(el => {
+    el.textContent = v.communityStart || '—';
+  });
+
+  for (let i = 0; i < 4; i++) {
+    const bCell = document.querySelector(`[data-burden-row="${i}"]`);
+    const eCell = document.querySelector(`[data-eff-row="${i}"]`);
+    if (bCell) bCell.textContent = v.burden[i];
+    if (eCell) eCell.textContent = Math.max(0, v.markCap - v.burden[i]);
+  }
+
+  Object.keys(v.menu).forEach(key => {
+    const row = document.querySelector(`[data-item="${key}"]`);
+    if (!row) return;
+    const item = v.menu[key];
+    row.classList.toggle('disabled', !item.available || item.max === 0);
+
+    const costEl = row.querySelector('[data-cost]');
+    if (costEl) costEl.textContent = item.cost + ' ea.';
+
+    const limitEl = row.querySelector('[data-limit]');
+    if (limitEl) {
+      if (!item.available || item.max === 0) limitEl.textContent = 'Not available.';
+      else if (key === 'veteranSkill' || key === 'reflexMemory') limitEl.textContent = `Max ${v.skillPerPlayer}/player, ${v.skillTotal} total (shared).`;
+      else if (key === 'heirloom') limitEl.textContent = `Max 1/player, ${v.heirloomTotal} total.`;
+      else if (key === 'foundationStone') limitEl.textContent = `Max ${v.foundationMax}. ${v.buildingNote}`;
+      else if (key === 'communityStanding') limitEl.textContent = `Max ${v.communityStandingMax} scores.`;
+      else limitEl.textContent = '';
+    }
+  });
+
+  document.getElementById('cats-max').textContent = v.maxCategories;
+}
+
+// ============================
+// EARN CALCULATOR
+// ============================
+function stepVal(id, delta) {
+  const el = document.getElementById(id);
+  let val = parseInt(el.textContent) || 0;
+  const maxMap = { 'side-quests': 10, 'comm15': 4 };
+  val = Math.max(0, Math.min(maxMap[id] || 99, val + delta));
+  el.textContent = val;
+
+  const marksEl = document.getElementById(id + '-marks');
+  if (marksEl) marksEl.textContent = val;
+
+  recalcEarn();
+}
+
+function recalcEarn() {
+  const v = getV();
+  let total = 0;
+
+  total += parseInt(document.getElementById('outcome-select').value) || 0;
+  total += parseInt(document.getElementById('side-quests').textContent) || 0;
+  if (document.getElementById('earn-destiny13').checked) total += 1;
+  if (document.getElementById('earn-destiny20').checked) total += 1;
+  total += parseInt(document.getElementById('comm15').textContent) || 0;
+  if (document.getElementById('earn-balanced').checked) total += 1;
+  if (document.getElementById('earn-buildings').checked) total += 1;
+  if (document.getElementById('earn-clean').checked) total += 1;
+
+  const capped = Math.min(total, v.markCap);
+  const transIdx = parseInt(document.getElementById('transition-select').value);
+  const burden = v.burden[transIdx] || 0;
+  const available = Math.max(0, capped - burden);
+
+  document.getElementById('bud-earned').textContent = total;
+  document.getElementById('bud-cap').textContent = v.markCap;
+  document.getElementById('bud-burden').textContent = burden;
+  document.getElementById('bud-available').textContent = available;
+
+  const earnedEl = document.getElementById('bud-earned');
+  earnedEl.classList.toggle('warn', total > v.markCap);
+
+  recalcSpend();
+}
+
+document.getElementById('outcome-select').addEventListener('change', recalcEarn);
+document.getElementById('transition-select').addEventListener('change', recalcEarn);
+
+// ============================
+// SPEND TRACKER
+// ============================
+function resetSpend() {
+  spendQty = {};
+  Object.keys(getV().menu).forEach(k => { spendQty[k] = 0; });
+  document.querySelectorAll('[id^="qty-"]').forEach(el => { el.textContent = '0'; });
+  recalcSpend();
+}
+
+function getSpendTotal() {
+  const v = getV();
+  let total = 0;
+  Object.keys(spendQty).forEach(k => {
+    total += (spendQty[k] || 0) * v.menu[k].cost;
+  });
+  return total;
+}
+
+function getUsedCategories() {
+  const cats = new Set();
+  document.querySelectorAll('.spend-row').forEach(row => {
+    const item = row.dataset.item;
+    if ((spendQty[item] || 0) > 0) {
+      cats.add(row.dataset.category);
+    }
+  });
+  return cats;
+}
+
+function spendStep(item, delta) {
+  const v = getV();
+  const menuItem = v.menu[item];
+  if (!menuItem || !menuItem.available) return;
+
+  let qty = (spendQty[item] || 0) + delta;
+  qty = Math.max(0, Math.min(menuItem.max, qty));
+
+  if (item === 'veteranSkill' || item === 'reflexMemory') {
+    const otherKey = item === 'veteranSkill' ? 'reflexMemory' : 'veteranSkill';
+    const otherQty = spendQty[otherKey] || 0;
+    if (qty + otherQty > v.skillTotal) qty = Math.max(0, v.skillTotal - otherQty);
+  }
+
+  const available = parseInt(document.getElementById('bud-available').textContent) || 0;
+  const currentTotal = getSpendTotal();
+  const oldCost = (spendQty[item] || 0) * menuItem.cost;
+  const newCost = qty * menuItem.cost;
+  if (currentTotal - oldCost + newCost > available) return;
+
+  const row = document.querySelector(`[data-item="${item}"]`);
+  const cat = row.dataset.category;
+  const usedCats = getUsedCategories();
+  if (qty > 0 && !usedCats.has(cat) && usedCats.size >= v.maxCategories) {
+    showWarning(`Category limit reached (${v.maxCategories} max). Remove something from another category first.`);
+    return;
+  }
+
+  spendQty[item] = qty;
+  document.getElementById('qty-' + item).textContent = qty;
+  clearWarning();
+  recalcSpend();
+}
+
+function recalcSpend() {
+  const v = getV();
+  const available = parseInt(document.getElementById('bud-available').textContent) || 0;
+  const spent = getSpendTotal();
+  const remaining = available - spent;
+
+  const remEl = document.getElementById('bud-remaining');
+  remEl.textContent = remaining;
+  remEl.classList.toggle('warn', remaining < 0);
+  remEl.classList.toggle('accent', remaining >= 0);
+
+  const usedCats = getUsedCategories();
+  document.getElementById('cats-used').textContent = usedCats.size;
+  const meter = document.getElementById('categories-meter');
+  meter.classList.toggle('at-limit', usedCats.size >= v.maxCategories);
+}
+
+function showWarning(msg) {
+  const el = document.getElementById('spend-warning');
+  el.textContent = msg;
+  el.classList.add('visible');
+  setTimeout(() => el.classList.remove('visible'), 3000);
+}
+function clearWarning() {
+  document.getElementById('spend-warning').classList.remove('visible');
+}
+
+// ============================
+// PERSISTENT CHECKLIST
+// ============================
+const CL_KEY = 'citadel-legacy-checklist';
+
+function toggleCheck(input) {
+  const li = input.closest('li');
+  li.classList.toggle('checked', input.checked);
+  saveChecklist();
+  updateChecklistProgress();
+}
+
+function saveChecklist() {
+  const state = {};
+  document.querySelectorAll('.i-checklist li[data-cl]').forEach(li => {
+    const cb = li.querySelector('input[type="checkbox"]');
+    if (cb && cb.checked) state[li.dataset.cl] = true;
+  });
+  try { localStorage.setItem(CL_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function loadChecklist() {
+  try {
+    const state = JSON.parse(localStorage.getItem(CL_KEY) || '{}');
+    document.querySelectorAll('.i-checklist li[data-cl]').forEach(li => {
+      const cb = li.querySelector('input[type="checkbox"]');
+      if (cb && state[li.dataset.cl]) {
+        cb.checked = true;
+        li.classList.add('checked');
+      }
+    });
+  } catch(e) {}
+  updateChecklistProgress();
+}
+
+function resetChecklist() {
+  document.querySelectorAll('.i-checklist li[data-cl]').forEach(li => {
+    const cb = li.querySelector('input[type="checkbox"]');
+    if (cb) { cb.checked = false; li.classList.remove('checked'); }
+  });
+  try { localStorage.removeItem(CL_KEY); } catch(e) {}
+  updateChecklistProgress();
+}
+
+function updateChecklistProgress() {
+  const all = document.querySelectorAll('.i-checklist li[data-cl]');
+  const checked = document.querySelectorAll('.i-checklist li.checked');
+  document.getElementById('cl-progress').textContent = `${checked.length} / ${all.length}`;
+}
+
+// ============================
+// PRINT QUICK REF
+// ============================
+function printQuickRef() {
+  document.body.classList.add('print-ref-only');
+  setTimeout(() => {
+    window.print();
+    document.body.classList.remove('print-ref-only');
+  }, 100);
+}
+
+// ============================
+// CHRONICLE BUILDER + PRINT
+// ============================
+function buildChronicleHTML() {
+  const g = id => (document.getElementById(id)?.value || '').trim();
+  const threat = g('chron-threat') || 'Untitled Threat';
+  const outcome = g('chron-outcome') || 'Victory';
+  const how = g('chron-how');
+  const players = [g('chron-p1'), g('chron-p2'), g('chron-p3'), g('chron-p4')].filter(Boolean);
+  const scores = [g('chron-score1'), g('chron-score2'), g('chron-score3'), g('chron-score4')];
+  const buildings = g('chron-buildings');
+  const sqDone = g('chron-sidequests-done');
+  const sqOpen = g('chron-sidequests-open');
+  const discoveries = g('chron-discoveries');
+  const regrets = g('chron-regrets');
+  const mapnotes = g('chron-mapnotes');
+  const marksEarned = g('chron-marks-earned');
+  const marksSpent = g('chron-marks-spent');
+
+  const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const nl2br = s => esc(s).replace(/\n/g, '<br>');
+  const section = (title, content) => content ? `<div class="chron-section"><h3>${title}</h3><div class="chron-val">${content}</div></div>` : '';
+  const sectionFull = (title, content) => content ? `<div class="chron-section chron-full"><h3>${title}</h3><div class="chron-val">${content}</div></div>` : '';
+
+  const scoresStr = scores.some(s => s) ?
+    scores.map((s, i) => `<span>Score ${i+1}: ${s || '—'}</span>`).join(' ') : '';
+
+  return `
+    <h1>Chronicle: ${esc(threat)}</h1>
+    <div class="chron-subtitle">${esc(outcome)} &middot; The 7th Citadel &middot; Legacy Mode</div>
+    <div class="chron-grid">
+      ${how ? sectionFull('How It Ended', nl2br(how)) : ''}
+      ${players.length ? sectionFull('Character Roster', players.map(p => esc(p)).join(' &middot; ')) : ''}
+      ${scoresStr ? sectionFull('Final Community Scores', `<div class="chron-scores-row">${scoresStr}</div>`) : ''}
+      <hr class="chron-divider">
+      ${section('Buildings', nl2br(buildings))}
+      ${section('Side Quests Completed', nl2br(sqDone))}
+      ${section('Side Quests Unfinished', nl2br(sqOpen))}
+      ${section('Key Discoveries', nl2br(discoveries))}
+      ${sectionFull('Regrets &amp; Unfinished Business', nl2br(regrets))}
+      ${sectionFull('Map Notes', nl2br(mapnotes))}
+      <hr class="chron-divider">
+      ${marksEarned || marksSpent ? `
+        <div class="chron-section chron-full">
+          <h3>Legacy Marks</h3>
+          <div class="chron-marks">${marksEarned || '0'} Earned${marksSpent ? ` &mdash; Spent: ${esc(marksSpent)}` : ''}</div>
+        </div>
+      ` : ''}
+    </div>
+    <div class="chron-footer">Chronicle Entry &middot; Legacy Mode v1.0 &middot; The 7th Citadel</div>
+  `;
+}
+
+function printChronicle() {
+  document.getElementById('chronicle-print-content').innerHTML = buildChronicleHTML();
+  document.body.classList.add('print-chronicle-only');
+  setTimeout(() => {
+    window.print();
+    document.body.classList.remove('print-chronicle-only');
+  }, 100);
+}
+
+// ============================
+// INIT
+// ============================
+resetSpend();
+updateVariantValues();
+recalcEarn();
+loadChecklist();
+
+document.querySelectorAll('details').forEach(d => {
+  d.addEventListener('toggle', () => {
+    if (d.open) d.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+});
+</script>
+
+</body>
+</html>
