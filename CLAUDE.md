@@ -31,6 +31,7 @@ Keep every new page inside this system; don't drift back to a generic app-landin
 - Write in the first person: one person runs the shop. Say plain, specific things.
 - Only claim what the app's own privacy, support or FAQ page says. Don't invent
   features, prices or App Store links. Prices go on the app's own page, not the home page.
+- Headlines say what the thing is. No puns, idioms or wordplay taglines.
 - Avoid filler like "seamless", "elevate", "unlock", "effortless" or "revolutionary".
   Avoid em-dash chains and three-adjective lists.
 
