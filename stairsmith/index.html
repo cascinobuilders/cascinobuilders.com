@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StairSmith — Stair Calculator for iOS</title>
     <meta name="description" content="StairSmith is a one-time purchase iOS stair calculator with a live elevation diagram, building-code compliance, and a print-ready PDF cut sheet. No subscription, no ads, yours forever.">
+    <meta name="theme-color" content="#f3eee3">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="preload" href="/assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/site.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --bg-canvas: #f5f2ec;
             --bg-surface: #fbf9f5;
@@ -19,39 +23,28 @@
             --accent-ink: #5a4428;
             --accent-soft: #f2ebdc;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--ink);
-            background: var(--bg-canvas);
-            padding: 2rem 1.5rem;
-            max-width: 760px;
-            margin: 0 auto;
-        }
-        header { text-align: center; padding: 2.5rem 0 2rem; }
+        .ss { max-width: calc(760px + 2 * var(--gutter)); margin: 0 auto; padding: 1rem var(--gutter) 0; }
+        .ss :where(p, h1, h2, ul) { margin: 0; }
+        .ss > header { text-align: center; padding: 2.5rem 0 2rem; }
         .brand-row { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; }
-        .brand { font-size: 1.5rem; font-weight: 800; }
+        .ss-brand { font: 800 1.1rem/1 var(--display); font-stretch: 125%; text-transform: uppercase; letter-spacing: .04em; }
         .accent-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
-        h1 { font-size: 2.5rem; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -0.02em; }
-        .tagline { color: var(--ink2); font-size: 1.15rem; max-width: 480px; margin: 0 auto 2rem; line-height: 1.5; }
+        h1 { font: 800 clamp(2.4rem, 6vw, 3.6rem)/.98 var(--display); font-stretch: 112%; margin-bottom: 1.1rem; letter-spacing: -0.02em; text-wrap: balance; }
+        .tagline { color: var(--ink2); font-size: 1.2rem; font-style: italic; max-width: 480px; margin: 0 auto 2rem; line-height: 1.5; }
         .cta { display: inline-block; padding: 0.95rem 2rem; background: var(--accent); color: var(--accent-ink); border-radius: 14px; font-weight: 600; font-size: 1rem; text-decoration: none; box-shadow: 0 6px 18px rgba(196, 136, 43, 0.25); transition: transform 150ms ease, box-shadow 150ms ease; }
         .cta:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(196, 136, 43, 0.32); }
-        .sale-tag { display: inline-block; margin-top: 1.25rem; padding: 0.35rem 0.7rem; background: var(--accent-soft); color: var(--accent-ink); border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(196, 136, 43, 0.25); }
+        .sale-tag { display: table; margin: 1.25rem auto 0; padding: 0.35rem 0.7rem; background: var(--accent-soft); color: var(--accent-ink); border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid rgba(196, 136, 43, 0.25); }
         .price-line { margin-top: 0.75rem; font-size: 1rem; color: var(--ink2); }
         .price-line .price-now { color: var(--ink); font-weight: 700; font-size: 1.15rem; }
         .price-line .price-was { color: var(--ink3); text-decoration: line-through; text-decoration-thickness: 1.5px; margin-left: 0.4rem; font-weight: 500; }
         .price-line .price-meta { display: block; margin-top: 0.35rem; font-size: 0.85rem; color: var(--ink3); }
-        section { background: var(--bg-surface); border: 1px solid var(--line); border-radius: 18px; padding: 1.75rem 1.75rem 1.5rem; margin-top: 1.5rem; box-shadow: 0 2px 10px rgba(38, 30, 14, 0.04); }
-        h2 { font-size: 1.25rem; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
-        h2 .label { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: var(--ink3); margin-right: 0.5rem; vertical-align: 1px; }
+        .ss section { background: var(--bg-surface); border: 1px solid var(--line); border-radius: 4px; padding: 1.75rem 1.75rem 1.5rem; margin-top: 1.5rem; box-shadow: 0 2px 10px rgba(38, 30, 14, 0.04); }
+        .ss h2 { font: 750 1.35rem/1.2 var(--display); margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+        h2 .label { font-family: var(--mono); display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: var(--ink3); margin-right: 0.5rem; vertical-align: 1px; }
         ul.feature-list { list-style: none; padding: 0; }
-        ul.feature-list li { padding: 0.7rem 0; border-top: 1px solid var(--line); display: flex; gap: 0.85rem; align-items: flex-start; color: var(--ink2); }
+        ul.feature-list li { position: relative; padding: 0.7rem 0 0.7rem 1.75rem; border-top: 1px solid var(--line); color: var(--ink2); }
         ul.feature-list li:first-child { border-top: none; }
-        ul.feature-list li::before { content: "→"; color: var(--accent); font-weight: 700; font-family: "SF Mono", monospace; }
-        .footer-links { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); text-align: center; color: var(--ink3); font-size: 0.9rem; }
-        .footer-links a { color: var(--accent-ink); text-decoration: none; margin: 0 0.6rem; font-weight: 600; }
-        .footer-links a:hover { text-decoration: underline; }
-        .meta { margin-top: 0.75rem; font-size: 0.8rem; color: var(--ink3); font-family: "SF Mono", monospace; }
+        ul.feature-list li::before { position: absolute; left: 0; content: "→"; color: var(--accent); font-weight: 700; font-family: var(--mono); }
 
         /* Preview rail — breaks out of the 760px body container so phones
            never get clipped by the page-level padding. Uses 100vw with a
@@ -62,8 +55,8 @@
             margin-left: calc(50% - 50vw);
             padding: 0.5rem 0 0.75rem;
         }
-        .preview-eyebrow { text-align: center; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; color: var(--ink3); text-transform: uppercase; margin-bottom: 0.5rem; }
-        .preview h2.preview-title { text-align: center; font-size: 1.6rem; letter-spacing: -0.01em; margin: 0 1.5rem 1.5rem; }
+        .preview-eyebrow { text-align: center; font-family: var(--mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.18em; color: var(--ink3); text-transform: uppercase; margin-bottom: 0.5rem; }
+        .preview h2.preview-title { text-align: center; font: 800 1.8rem/1.05 var(--display); font-stretch: 112%; text-transform: uppercase; letter-spacing: -0.01em; margin: 0 1.5rem 1.5rem; }
         .preview-rail-wrap { position: relative; }
         .preview-rail {
             display: flex;
@@ -123,7 +116,7 @@
             text-align: center;
             font-size: 0.78rem;
             color: var(--ink3);
-            font-family: "SF Mono", monospace;
+            font-family: var(--mono);
             letter-spacing: 0.04em;
             margin-top: -0.25rem;
         }
@@ -137,13 +130,32 @@
         @media (prefers-reduced-motion: reduce) {
             .preview-card .phone { transition: none; }
         }
+        /* Shared shop-drawing button, in StairSmith amber */
+        .cta { font: 600 14px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink); border: 1.5px solid var(--ink); border-radius: 2px; box-shadow: 3px 3px 0 var(--ink); padding: 15px 22px 14px; }
+        .cta:hover { color: var(--ink); transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+        .sale-tag { border-radius: 2px; font-family: var(--mono); }
+        .price-line .price-now { font-family: var(--display); font-size: 1.4rem; }
     </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="ruler" aria-hidden="true"><span style="left:96px">1</span><span style="left:192px">2</span><span style="left:288px">3</span><span style="left:384px">4</span><span style="left:480px">5</span><span style="left:576px">6</span><span style="left:672px">7</span><span style="left:768px">8</span><span style="left:864px">9</span><span style="left:960px">10</span><span style="left:1056px">11</span><span style="left:1152px">12</span><span style="left:1248px">13</span><span style="left:1344px">14</span><span style="left:1440px">15</span><span style="left:1536px">16</span><span style="left:1632px">17</span><span style="left:1728px">18</span><span style="left:1824px">19</span><span style="left:1920px">20</span><span style="left:2016px">21</span><span style="left:2112px">22</span><span style="left:2208px">23</span><span style="left:2304px">24</span><span style="left:2400px">25</span><span style="left:2496px">26</span><span style="left:2592px">27</span><span style="left:2688px">28</span></div>
+  <nav class="nav" aria-label="Main">
+    <a class="brand" href="/" aria-label="Cascino Builders, home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path class="sq" d="M4.5 2.5v17h17" stroke-width="3" stroke-linecap="square"/><path d="M9 19.5v-2.5M13 19.5v-3.5M17 19.5v-2.5M4.5 15h2.5M4.5 11h3.5M4.5 7h2.5" stroke-width="1.4"/></svg><span>Cascino<span class="brand-word-2"> Builders</span></span></a>
+    <div class="nav-links">
+      <a href="/stairsmith/" aria-current="page">StairSmith</a>
+      <a href="/stairsmith/support/">Support</a>
+      <a href="/stairsmith/privacy/">Privacy</a>
+    </div>
+  </nav>
+</header>
+<main id="main" class="ss">
     <header>
         <div class="brand-row">
             <span class="accent-dot"></span>
-            <span class="brand">StairSmith</span>
+            <span class="ss-brand">StairSmith</span>
         </div>
         <h1>Stair calculator for builders, DIYers, and dads with a saw.</h1>
         <p class="tagline">Live diagram. Code compliance. Print-ready cut sheet. No subscription, no ads, yours forever.</p>
@@ -205,15 +217,23 @@
             <li><strong>Code compliance</strong> — pass/fail on riser, going, 2R+T, headroom; handrail and guard reminders for free.</li>
         </ul>
     </section>
+</main>
 
-    <div class="footer-links">
-        <a href="/stairsmith/support/">Support</a>
-        ·
-        <a href="/stairsmith/privacy/">Privacy</a>
-        ·
-        <a href="/">Cascino Builders</a>
-        <p class="meta">Made with sawdust in Orinda, CA.</p>
+<footer class="title-block">
+  <div class="tb-grid">
+    <div><span class="label">Project</span><span class="v">StairSmith</span></div>
+    <div><span class="label">Location</span><span class="v">Orinda, CA</span></div>
+    <div><span class="label">Sheet</span><span class="v">SS-1 Overview</span></div>
+    <div><span class="label">Rev.</span><span class="v">Nov 2026</span></div>
+    <div class="tb-links">
+      <a href="/">Cascino Builders</a>
+      <a href="/stairsmith/support/">Support</a>
+      <a href="/stairsmith/privacy/">Privacy</a>
+      <a href="mailto:support@cascinobuilders.com?subject=StairSmith">support@cascinobuilders.com</a>
     </div>
+  </div>
+  <p class="tb-fine">© 2026 Cascino Builders. Made with sawdust in Orinda, California.</p>
+</footer>
 
     <script>
         // Autoplay each preview clip only when it scrolls into view; pause and
