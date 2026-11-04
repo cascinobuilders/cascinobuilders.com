@@ -4,7 +4,9 @@ Plain static site, no build step. Every page is a hand-written `index.html` in i
 Shared look lives in `assets/site.css`; the home page adds `assets/home.css`.
 
 ## The look: a shop drawing
-The site reads like a carpenter's drawing sheet, because the shop builds tools for builders.
+The site is the public side of a one-person tinkering workshop. Apps for iPhone and
+Apple Watch are the first kind of project, not the only one, so keep the home page
+open to other kinds of work. The site reads like a carpenter's drawing sheet.
 Keep every new page inside this system; don't drift back to a generic app-landing look.
 
 - **Paper and ink.** Drafting-grid paper `--paper #f3eee3`, graphite `--ink #1d1b17`,
@@ -28,7 +30,7 @@ Keep every new page inside this system; don't drift back to a generic app-landin
   fully with JS off.
 
 ## Copy
-- Write in the first person: one person runs the shop. Say plain, specific things.
+- Write in the first person: one person runs the workshop. Say plain, specific things.
 - Only claim what the app's own privacy, support or FAQ page says. Don't invent
   features, prices or App Store links. Prices go on the app's own page, not the home page.
 - Headlines say what the thing is. No puns, idioms or wordplay taglines.
@@ -39,9 +41,12 @@ Keep every new page inside this system; don't drift back to a generic app-landin
 - New support, privacy or FAQ page: copy `kitchencounter/privacy/index.html` and keep the
   header (ruler, brand, app sub-nav with `aria-current`), crumbs, `main.doc`, and title-block footer.
   Number the `h2`s with `data-n="01"`, `"02"`, and so on.
-- New app: add a `.part` to the cut list in `index.html`, a sheet code for the
-  title block (SS, KC, RT…), and its URLs to `sitemap.xml`.
-- `citadel-legacy/` is a stand-alone tool with its own style; leave it alone.
+- New app: add a `.part` to the Apps list in `index.html`, a sheet code for the
+  title block (SS, KC, RT…), and its URLs to `sitemap.xml`. The app rules
+  (no accounts, no ads, no tracking) apply to apps only.
+- Anything else (a tool, a write-up, a physical build): add an `.project` to
+  "Other projects", numbered after the last entry, and add its URL to `sitemap.xml`.
+- `citadel-legacy/` is a stand-alone tool with its own style; leave its page alone.
 - After changing `tools/og.html` or `favicon.svg`, re-render `og.jpg` and `apple-touch-icon.png`
   with `node tools/render-images.js` (needs Playwright and a local server on port 4173).
 

@@ -1,12 +1,13 @@
 # cascinobuilders.com
 
-The website for Cascino Builders: StairSmith, Kitchen Counter and Rep Track, plus their
-support and privacy pages (the URLs the App Store listings point at, so keep them stable).
+The public side of the Cascino Builders workshop: the iPhone and Apple Watch apps
+(StairSmith, Kitchen Counter, Rep Track) with their support and privacy pages, plus other
+projects. The App Store listings point at the support and privacy URLs, so keep them stable.
 
 Plain static site with no build step; the repo root is published as-is.
 
 ```
-index.html                 home: hero, the apps as a cut list, shop rules, contact
+index.html                 home: hero, apps and app rules, other projects, contact
 assets/site.css            shared tokens, fonts, ruler header, buttons, doc pages, title-block footer
 assets/home.css            home page only
 assets/site.js             drawings ink in on scroll, "copy address" button
