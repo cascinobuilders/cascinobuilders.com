@@ -1,0 +1,244 @@
+/* Cascino Builders — shared styles.
+   The look is a shop drawing: drafting-grid paper, graphite ink, one red
+   lumber-crayon accent. See CLAUDE.md for the rules before changing it. */
+
+@font-face {
+  font-family: "Archivo";
+  src: url("/assets/fonts/archivo.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 62% 125%; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("/assets/fonts/newsreader.woff2") format("woff2");
+  font-weight: 300 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("/assets/fonts/newsreader-italic.woff2") format("woff2");
+  font-weight: 300 700; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  src: url("/assets/fonts/spline-sans-mono.woff2") format("woff2");
+  font-weight: 300 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  --paper: #f3eee3;
+  --paper-2: #e8e0cf;
+  --ink: #1d1b17;
+  --ink-2: #48433a;
+  --ink-3: #7d7566;
+  --rule: #cfc5b1;
+  --mark: #c2401f;          /* lumber crayon */
+  --mark-ink: #9e3115;      /* the same red, dark enough for small text */
+  --grid: rgba(46, 86, 140, .075);
+  --grid-major: rgba(46, 86, 140, .13);
+
+  --display: "Archivo", "Arial Narrow", sans-serif;
+  --text: "Newsreader", Georgia, serif;
+  --mono: "Spline Sans Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --measure: 66ch;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 96px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+body {
+  margin: 0;
+  font: 400 clamp(17px, 1.05rem + .2vw, 20px)/1.55 var(--text);
+  font-optical-sizing: auto;
+  color: var(--ink);
+  background-color: var(--paper);
+  /* drafting grid: 8px minor, 48px major */
+  background-image:
+    linear-gradient(var(--grid-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-major) 1px, transparent 1px),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px, 48px 48px, 8px 8px, 8px 8px;
+  background-position: -1px -1px;
+  overflow-x: clip;
+}
+
+img, svg, video { max-width: 100%; }
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+a:hover { color: var(--mark-ink); text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--mark); outline-offset: 3px; }
+::selection { background: var(--mark); color: var(--paper); }
+
+.skip {
+  position: absolute; left: 8px; top: -100px; z-index: 100;
+  padding: 8px 12px; background: var(--ink); color: var(--paper); font: 500 13px var(--mono);
+}
+.skip:focus { top: 8px; }
+
+/* ---------- type helpers ---------- */
+.label {
+  font: 500 11.5px/1.3 var(--mono);
+  letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3);
+}
+.display {
+  font-family: var(--display); font-stretch: 125%; font-weight: 800;
+  text-transform: uppercase; letter-spacing: -.01em; line-height: .92;
+}
+
+/* ---------- header: a ruler in real CSS inches, then the nav ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  border-bottom: 1.5px solid var(--ink);
+}
+.ruler {
+  position: relative; height: 24px; overflow: hidden;
+  background-color: var(--paper-2);
+  border-bottom: 1px solid var(--ink);
+  /* 1in = 96px. Ticks at 1, 1/2, 1/4, 1/8, 1/16 in, growing up from the bottom edge. */
+  background-image:
+    repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 96px),
+    repeating-linear-gradient(90deg, transparent 0 48px, var(--ink) 48px 49px, transparent 49px 96px),
+    repeating-linear-gradient(90deg, transparent 0 24px, var(--ink) 24px 25px, transparent 25px 48px),
+    repeating-linear-gradient(90deg, transparent 0 12px, var(--ink) 12px 13px, transparent 13px 24px),
+    repeating-linear-gradient(90deg, transparent 0 6px, var(--ink-3) 6px 7px, transparent 7px 12px);
+  background-size: 100% 13px, 100% 9px, 100% 7px, 100% 5px, 100% 3px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+}
+.ruler span {
+  position: absolute; top: 2px; transform: translateX(3px);
+  font: 500 9.5px/1 var(--mono); color: var(--ink-2);
+}
+/* the red pencil mark rides along the ruler as you scroll */
+@supports (animation-timeline: scroll()) {
+  .ruler::after {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 2px;
+    background: var(--mark);
+    animation: ruler-mark linear both; animation-timeline: scroll(root block);
+  }
+  @keyframes ruler-mark { from { transform: translateX(0); } to { transform: translateX(calc(100vw - 2px)); } }
+}
+
+.nav {
+  display: flex; align-items: center; gap: 8px 28px;
+  padding: 10px var(--gutter);
+  max-width: 1280px; margin: 0 auto;
+}
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font: 800 15px/1 var(--display); font-stretch: 125%;
+  letter-spacing: .02em; text-transform: uppercase; text-decoration: none; color: var(--ink);
+  white-space: nowrap;
+}
+.brand svg { width: 22px; height: 22px; flex: none; }
+.brand:hover { color: var(--ink); }
+.brand:hover svg .sq { stroke: var(--mark); }
+.nav-links { display: flex; gap: 22px; margin-left: auto; }
+.nav-links a {
+  font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; color: var(--ink-2); padding: 6px 0; white-space: nowrap;
+}
+.nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--mark-ink); }
+.nav-links a[aria-current="page"] { text-decoration: underline; text-decoration-thickness: 2px; }
+@media (max-width: 560px) {
+  .brand-word-2 { display: none; }
+  .nav-links { gap: 16px; }
+}
+@media (max-width: 420px) {
+  .nav:has(.nav-links a:nth-child(3)) .brand > span { display: none; }
+  .brand svg { width: 26px; height: 26px; }
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: .55em;
+  padding: 12px 18px 11px;
+  font: 600 13px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase;
+  text-decoration: none; color: var(--paper); background: var(--ink);
+  border: 1.5px solid var(--ink); border-radius: 2px;
+  box-shadow: 3px 3px 0 var(--mark);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+  cursor: pointer;
+}
+.btn:hover { color: var(--paper); transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--mark); }
+.btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--mark); }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: none; }
+.btn.ghost:hover { color: var(--mark-ink); border-color: var(--mark); }
+.btn svg { width: 14px; height: 14px; flex: none; }
+
+/* ---------- footer: a drawing title block ---------- */
+.title-block {
+  max-width: 1280px; margin: clamp(64px, 10vw, 120px) auto 0;
+  padding: 0 var(--gutter) 32px;
+}
+.tb-grid {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  border: 1.5px solid var(--ink); background: var(--paper);
+}
+.tb-grid > div { padding: 10px 14px 12px; border-left: 1px solid var(--ink); min-width: 0; }
+.tb-grid > div:first-child { border-left: 0; }
+.tb-grid .label { display: block; margin-bottom: 6px; font-size: 10px; }
+.tb-grid .v { font: 700 15px/1.25 var(--display); font-stretch: 112%; text-transform: uppercase; letter-spacing: .01em; }
+.tb-grid .v a { text-decoration: none; }
+.tb-grid .v a:hover { text-decoration: underline; }
+.tb-links { grid-column: 1 / -1; border-left: 0 !important; border-top: 1px solid var(--ink); display: flex; flex-wrap: wrap; gap: 6px 22px; }
+.tb-links a { font: 500 12px/1.6 var(--mono); letter-spacing: .06em; text-transform: uppercase; text-decoration: none; color: var(--ink-2); }
+.tb-links a:hover { color: var(--mark-ink); text-decoration: underline; }
+.tb-fine { margin: 10px 0 0; font: 400 12px/1.5 var(--mono); color: var(--ink-3); }
+@media (max-width: 720px) {
+  .tb-grid { grid-template-columns: 1fr 1fr; }
+  .tb-grid > div:nth-child(odd) { border-left: 0; }
+  .tb-grid > div:nth-child(n+3) { border-top: 1px solid var(--ink); }
+}
+
+/* ---------- document pages: support, privacy, FAQ ---------- */
+.doc {
+  max-width: calc(var(--measure) + 2 * var(--gutter));
+  margin: 0 auto; padding: clamp(32px, 6vw, 72px) var(--gutter) 0;
+}
+.crumbs { margin: 0 0 28px; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.crumbs a { text-decoration: none; color: var(--ink-2); }
+.crumbs a:hover { color: var(--mark-ink); text-decoration: underline; }
+.crumbs .sep { color: var(--rule); }
+.doc h1 {
+  margin: 0 0 14px;
+  font: 800 clamp(40px, 8vw, 76px)/.92 var(--display); font-stretch: 125%;
+  text-transform: uppercase; letter-spacing: -.015em;
+}
+.doc .subtitle { margin: 0 0 8px; font-style: italic; color: var(--ink-2); font-size: 1.1em; }
+.doc .effective { margin: 0 0 36px; }
+.doc .lead-rule { height: 0; border: 0; border-top: 1.5px solid var(--ink); margin: 28px 0 0; position: relative; }
+.doc h2 {
+  margin: 48px 0 12px; padding-top: 10px;
+  font: 700 13px/1.3 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+  border-top: 1.5px solid var(--ink); color: var(--ink);
+  display: flex; gap: 12px;
+}
+.doc h2::before { content: attr(data-n); color: var(--mark-ink); }
+.doc h3 {
+  margin: 32px 0 8px;
+  font: 700 clamp(19px, 1rem + .5vw, 23px)/1.2 var(--display); font-stretch: 100%;
+  letter-spacing: -.005em;
+}
+.doc p, .doc ul, .doc ol { margin: 0 0 16px; color: var(--ink-2); }
+.doc strong { color: var(--ink); font-weight: 600; }
+.doc ul, .doc ol { padding-left: 1.3em; }
+.doc li { margin-bottom: 6px; }
+.doc li::marker { color: var(--mark); font-family: var(--mono); }
+.doc code {
+  font: 500 .82em var(--mono); background: var(--paper-2);
+  padding: 2px 6px; border-radius: 2px; color: var(--ink);
+}
+.doc .note {
+  margin: 8px 0 28px; padding: 18px 20px;
+  background: var(--paper); border: 1.5px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--paper-2);
+}
+.doc .note .label { display: block; margin-bottom: 6px; color: var(--mark-ink); }
+.doc .note p { margin: 0; color: var(--ink); font-size: 1.08em; line-height: 1.45; }
+.doc .contact { margin: 12px 0 8px; }
