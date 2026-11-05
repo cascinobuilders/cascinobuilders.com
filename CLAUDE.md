@@ -30,12 +30,14 @@ Keep every new page inside this system; don't drift back to a generic app-landin
   fully with JS off.
 
 ## Copy
-- Write in the first person: one person runs the workshop. Sound like Taylor: short,
+- Write in the first person: one person runs the workshop. Sound like the owner: short,
   casual, direct sentences and fragments, the odd dry joke ("dads with a saw",
   "That's it.", "Made with sawdust"), and an exclamation mark now and then. Not polished
   marketing prose, no semicolons, no tidy lists of three.
-- The home intro is Taylor's own words; don't rewrite it: "Various interests and builds
+- The home intro is the owner's own words; don't rewrite it: "Various interests and builds
   to explore those interests. A constantly moving target!"
+- No personal details: no town, address, real name, personal email or photos with
+  location data. The only contact is support@cascinobuilders.com.
 - Only claim what the app's own privacy, support or FAQ page says. Don't invent
   features, prices or App Store links. Prices go on the app's own page, not the home page.
 - Headlines say what the thing is. No puns, idioms or wordplay taglines.
