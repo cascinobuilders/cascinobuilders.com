@@ -61,4 +61,6 @@ Keep every new page inside this system; don't drift back to a generic app-landin
 - Screenshot at 1440×900 and 390×844: no sideways scroll, no console errors.
 - Check once with reduced motion on; drawings and the stamp must be fully visible.
 - Tab once from the top: the first stop is "Skip to content".
-- Pushing to `main` publishes the site, so work on a branch and open a PR.
+- Work on a branch and open a PR. Merging to `main` does not publish: the live site is on
+  Netlify and is deployed by hand from the Mac (`netlify deploy --prod --dir .`). Remind
+  the owner to deploy after a merge. GitHub Pages is not used.

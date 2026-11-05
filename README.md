@@ -27,3 +27,15 @@ Design and copy rules are in `CLAUDE.md`.
 ```
 python3 -m http.server 4173     # then open http://localhost:4173
 ```
+
+## Deploying
+
+The live site is on Netlify, deployed by hand from the Mac with the Netlify CLI. Netlify is
+not connected to GitHub, so merging to `main` does not publish anything. To go live:
+
+```
+git pull origin main
+netlify deploy --prod --dir .
+```
+
+There is no build step: the repo root is uploaded as-is. GitHub Pages is not used.
